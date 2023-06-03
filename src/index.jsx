@@ -4,7 +4,7 @@ import { createRoot } from 'react-dom/client';
 import './index.scss';
 
 // Main component (will eventually use all the others)
-const theFlixApplication = () => {
+const TheFlixApplication = () => {
 	return (
 		<div className='the-flix'>
 			<div>Good morning</div>
@@ -17,4 +17,4 @@ const container = document.querySelector('#root');
 const root = createRoot(container);
 
 // Tells React to render your app in the root DOM element
-root.render(<theFlixApplication />);
+root.render(<TheFlixApplication />);
