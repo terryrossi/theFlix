@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { MovieCard } from '../movie-card/movie-card';
+import { MovieCard } from '../movie-card/movie-card.jsx';
 import { MovieView } from '../movie-view/movie-view';
 
 export const MainView = () => {
