@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { MovieCard } from '../movie-card/movie-card.jsx';
+import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
 
 export const MainView = () => {
@@ -7,32 +7,32 @@ export const MainView = () => {
 		{
 			id: 1,
 			title: 'Superman',
-			image: 'https://a.co/d/hM92oRg',
-			Actor: 'Henry Cavill',
+			image: 'https://m.media-amazon.com/images/I/510CJKGT6nL.jpg',
+			actor: 'Henry Cavill',
 		},
 		{
 			id: 2,
 			title: 'Batman',
-			image: 'https://a.co/d/3WH4qKF',
-			author: 'Christian Bale',
+			image: 'https://m.media-amazon.com/images/I/71vUV3wgwKL._SL1500_.jpg',
+			actor: 'Christian Bale',
 		},
 		{
 			id: 3,
 			title: 'Ironman',
-			image: 'https://a.co/d/6qaUevl',
-			author: 'Robert Downey Jr',
+			image: 'https://m.media-amazon.com/images/I/41W6U03Kr4L.jpg',
+			actor: 'Robert Downey Jr',
 		},
 		{
 			id: 4,
 			title: 'Captain Amaerica',
-			image: 'https://a.co/d/5tm0RP1',
-			author: 'Chris Evans',
+			image: 'https://m.media-amazon.com/images/I/51-9t+DjrKL.jpg',
+			actor: 'Chris Evans',
 		},
 		{
 			id: 5,
 			title: 'Wonder Woman',
-			image: 'https://a.co/d/5nxvNJv',
-			author: 'Gal Gabot',
+			image: 'https://m.media-amazon.com/images/I/91Rtt7Zh7wL._SL1500_.jpg',
+			actor: 'Gal Gabot',
 		},
 	]);
 
