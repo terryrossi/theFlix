@@ -9,7 +9,7 @@ div {
 .cards {
   width: 80%;
   max-width: 1500px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
   margin-top: 2em;
