@@ -1,5 +1,12 @@
+// import { useState } from 'react';
+
 import { MainView } from '../main-view/main-view';
-export const MovieView = ({ movie, onBackClick }) => {
+export const MovieView = ({
+	movie,
+
+	onBackClick,
+}) => {
+	// const [selectedMovie, setSelectedMovie] = useState(null);
 	return (
 		<div class='cards'>
 			<div class='card'>
@@ -16,9 +23,6 @@ export const MovieView = ({ movie, onBackClick }) => {
 				<h4>Director: {movie.director}</h4>
 				<button onClick={onBackClick}>Back</button>
 			</div>
-			<div></div>
-
-			<div></div>
 		</div>
 	);
 };
