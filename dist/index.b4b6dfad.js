@@ -28527,7 +28527,7 @@ const SignupView = ()=>{
         console.log("Avant le fetch data: ", data);
         fetch(`https://theflix-api.herokuapp.com/users`, {
             method: "POST",
-            header: {
+            headers: {
                 "content-type": "application/json"
             },
             body: JSON.stringify(data)
