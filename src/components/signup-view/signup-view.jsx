@@ -1,12 +1,13 @@
 import { useState } from 'react';
+import { Form, Button } from 'react-bootstrap';
 
 export const SignupView = () => {
-	const [userName, setUserName] = useState(null);
-	const [password, setPassword] = useState(null);
-	const [email, setEmail] = useState(null);
-	const [birthDate, setBirthDate] = useState(null);
-	const [firstName, setFirstName] = useState(null);
-	const [lastName, setLastName] = useState(null);
+	const [userName, setUserName] = useState('');
+	const [password, setPassword] = useState('');
+	const [email, setEmail] = useState('');
+	const [birthDate, setBirthDate] = useState('');
+	const [firstName, setFirstName] = useState('');
+	const [lastName, setLastName] = useState('');
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
@@ -36,62 +37,70 @@ export const SignupView = () => {
 			});
 	};
 	return (
-		<form onSubmit={handleSubmit}>
-			<label>
-				FirstName:{' '}
-				<input
+		<Form onSubmit={handleSubmit}>
+			<Form.Group controlId='formFirstName'>
+				<Form.Label>FirstName:</Form.Label>
+				<Form.Control
 					type='text'
 					value={firstName}
 					onChange={(e) => setFirstName(e.target.value)}
 					required
 				/>
-			</label>
-			<label>
-				LastName:
-				<input
+			</Form.Group>
+			<Form.Group controlId='formLastName'>
+				<Form.Label>LastName:</Form.Label>
+				<Form.Control
 					type='text'
 					value={lastName}
 					onChange={(e) => setLastName(e.target.value)}
 					required
 				/>
-			</label>
-			<label>
-				Email:{' '}
-				<input
+			</Form.Group>
+			<Form.Group controlId='formEmail'>
+				<Form.Label>Email:</Form.Label>
+				<Form.Control
 					type='email'
 					value={email}
 					onChange={(e) => setEmail(e.target.value)}
 					required
 				/>
-			</label>
-			<label>
-				BirthDate:{' '}
-				<input
+			</Form.Group>
+			<Form.Group controlId='formBirthDate'>
+				<Form.Label>BirthDate:</Form.Label>
+				<Form.Control
 					type='date'
 					value={birthDate}
 					onChange={(e) => setBirthDate(e.target.value)}
+					required
 				/>
-			</label>
-			<label>
-				UserName:{' '}
-				<input
+			</Form.Group>
+			<Form.Group controlId='formNewUserName'>
+				<Form.Label>UserName:</Form.Label>
+				<Form.Control
 					type='text'
-					value={userName}
 					minLength={5}
+					value={userName}
 					onChange={(e) => setUserName(e.target.value)}
 					required
 				/>
-			</label>
-			<label>
-				Password:
-				<input
+			</Form.Group>
+
+			<Form.Group controlId='formNewPassword'>
+				<Form.Label>Password:</Form.Label>
+				<Form.Control
 					type='password'
+					minLength={8}
 					value={password}
 					onChange={(e) => setPassword(e.target.value)}
 					required
 				/>
-			</label>
-			<button type='submit'>Submit</button>
-		</form>
+			</Form.Group>
+
+			<Button
+				variant='primary'
+				type='submit'>
+				Submit
+			</Button>
+		</Form>
 	);
 };

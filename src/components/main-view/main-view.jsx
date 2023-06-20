@@ -3,6 +3,7 @@ import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
 import { LoginView } from '../login-view/login-view';
 import { SignupView } from '../signup-view/signup-view';
+import { Row } from 'react-bootstrap/Row';
 
 export const MainView = () => {
 	const [movies, setMovies] = useState([]);
@@ -42,13 +43,15 @@ export const MainView = () => {
 	if (!user) {
 		return (
 			<>
+				<h4>Existing User. Please Login...</h4>
 				<LoginView
 					onLoggedIn={(user, token) => {
 						setUser(user);
 						setToken(token);
 					}}
 				/>
-				New User:
+				<hr />
+				<h4>New User. Please Signup...</h4>
 				<SignupView
 					onSignup={(user) => {
 						setUser(user);
@@ -83,7 +86,7 @@ export const MainView = () => {
 
 				{similarMovies.map((movie) => (
 					<MovieCard
-						key={movie._id}
+						// key={movie._id}
 						movie={movie}
 						onMovieClick={(newSelectedMovie) => {
 							setSelectedMovie(newSelectedMovie);
@@ -106,7 +109,7 @@ export const MainView = () => {
 			<div>
 				{movies.map((movie) => (
 					<MovieCard
-						key={movie._id}
+						// key={movie._id}
 						movie={movie}
 						onMovieClick={(newSelectedMovie) => {
 							setSelectedMovie(newSelectedMovie);

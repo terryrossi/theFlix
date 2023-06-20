@@ -1,4 +1,5 @@
 // import { useState } from 'react';
+import './movie-view.scss';
 
 import { MainView } from '../main-view/main-view';
 export const MovieView = ({
@@ -8,11 +9,12 @@ export const MovieView = ({
 }) => {
 	// const [selectedMovie, setSelectedMovie] = useState(null);
 	return (
-		<div class='cards'>
-			<div class='card'>
+		<div className='cards'>
+			<div className='card'>
 				<img
 					alt='Movie'
 					src={movie.image}
+					crossOrigin='anonymous'
 				/>
 			</div>
 			<div>
@@ -21,7 +23,11 @@ export const MovieView = ({
 				<h4>Genre: {movie.genre}</h4>
 				<h4>Description: {movie.description}</h4>
 				<h4>Director: {movie.director}</h4>
-				<button onClick={onBackClick}>Back</button>
+				<button
+					className='back-button'
+					onClick={onBackClick}>
+					Back
+				</button>
 			</div>
 		</div>
 	);
