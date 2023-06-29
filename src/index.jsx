@@ -1,6 +1,7 @@
 import { createRoot } from 'react-dom/client';
 import { MainView } from './components/main-view/main-view';
 import { Container } from 'react-bootstrap';
+import { MyHeader } from './components/header/header';
 
 // Bootstrap CSS file
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -10,7 +11,8 @@ import './index.scss';
 // Main component (will eventually use all the others)
 const TheFlixApplication = () => {
 	return (
-		<Container style={{ border: '1px solid red' }}>
+		<Container>
+			<MyHeader />
 			<MainView />
 		</Container>
 	);

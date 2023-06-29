@@ -20,7 +20,7 @@ export const SignupView = () => {
 			password: password,
 			birthDate: birthDate,
 		};
-		console.log('Avant le fetch data: ', data);
+		// console.log('Avant le fetch data: ', data);
 		fetch(`https://theflix-api.herokuapp.com/users`, {
 			method: 'POST',
 			header: {
@@ -98,7 +98,8 @@ export const SignupView = () => {
 
 			<Button
 				variant='primary'
-				type='submit'>
+				type='submit'
+				style={{ marginTop: '15px' }}>
 				Submit
 			</Button>
 		</Form>

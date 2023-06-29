@@ -9,13 +9,25 @@ import { Button, Card } from 'react-bootstrap';
 export const MovieCard = ({ movie, onMovieClick }) => {
 	// console.log('in MovieCard : ' + movie.title);
 	return (
-		<Card onClick={() => onMovieClick(movie)}>
+		<Card
+			style={{ marginTop: '10px', boxShadow: '1px 1px 10px 0px rgb(41, 39, 39)' }}
+			onClick={() => onMovieClick(movie)}>
 			<Card.Img
 				variant='top'
 				src={movie.image}
+				alt={'Poster of the movie'}
+				style={{
+					// width: '100%',
+					// height: '100%',
+					height: '50%',
+					objectFit: 'cover',
+					// borderRadius: '9px',
+					// padding: '15px',
+					// boxShadow: '1px 1px 10px 0px rgb(41, 39, 39)',
+				}}
 			/>
 			<Card.Body>
-				<Card.Title>{movie.title}</Card.Title>
+				<Card.Title className='text-center'>{movie.title}</Card.Title>
 			</Card.Body>
 		</Card>
 	);
