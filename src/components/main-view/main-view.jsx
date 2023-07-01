@@ -10,10 +10,10 @@ export const MainView = () => {
 	const [movies, setMovies] = useState([]);
 	const [selectedMovie, setSelectedMovie] = useState(null);
 	// const [similarMovies, setSimilarMovies] = useState([]);
-	const [user, setUser] = useState(null);
-	const [token, setToken] = useState(null);
 	const storedUser = JSON.parse(localStorage.getItem('user'));
 	const storedToken = localStorage.getItem('token');
+	const [user, setUser] = useState(storedUser ? storedUser : null);
+	const [token, setToken] = useState(storedToken ? storedToken : null);
 
 	// Constructor
 	useEffect(() => {
@@ -45,15 +45,16 @@ export const MainView = () => {
 	const handleLogout = (user) => {
 		setUser(null);
 		setToken(null);
+		setSelectedMovie(null);
 		localStorage.clear();
 		console.log('LOGGED OUT');
 	};
 
-	if (selectedMovie) {
+	if (selectedMovie && user) {
 		const similarMovies = movies.filter((movie) => {
 			return movie.id !== selectedMovie.id && movie.genre === selectedMovie.genre;
 		});
-
+		console.log(selectedMovie, similarMovies);
 		return (
 			// When a MovieCard is clicked
 			<>

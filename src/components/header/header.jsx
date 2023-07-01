@@ -11,7 +11,6 @@ export const MyHeader = ({ onLogout }) => {
 
 	// Logout
 	const handleLogout = (user) => {
-		console.log('Inside Logout');
 		onLogout();
 	};
 

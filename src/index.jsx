@@ -12,7 +12,7 @@ import './index.scss';
 const TheFlixApplication = () => {
 	return (
 		<Container>
-			<MyHeader />
+			{/* <MyHeader /> */}
 			<MainView />
 		</Container>
 	);
