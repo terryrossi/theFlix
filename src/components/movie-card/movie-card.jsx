@@ -7,11 +7,11 @@ import { Button, Card } from 'react-bootstrap';
 // };
 // or...
 export const MovieCard = ({ movie, onMovieClick }) => {
-	// console.log('in MovieCard : ' + movie.title);
 	return (
 		<Card
 			style={{ marginTop: '10px', boxShadow: '1px 1px 10px 0px rgb(41, 39, 39)' }}
-			onClick={() => onMovieClick(movie)}>
+			onClick={() => onMovieClick(movie)}
+			key={movie.id}>
 			<Card.Img
 				variant='top'
 				src={movie.image}
@@ -19,7 +19,7 @@ export const MovieCard = ({ movie, onMovieClick }) => {
 				style={{
 					// width: '100%',
 					// height: '100%',
-					height: '50%',
+					height: '350px',
 					objectFit: 'cover',
 					// borderRadius: '9px',
 					// padding: '15px',

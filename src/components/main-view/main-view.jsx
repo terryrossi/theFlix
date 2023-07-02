@@ -54,27 +54,23 @@ export const MainView = () => {
 		const similarMovies = movies.filter((movie) => {
 			return movie.id !== selectedMovie.id && movie.genre === selectedMovie.genre;
 		});
-		console.log(selectedMovie, similarMovies);
 		return (
 			// When a MovieCard is clicked
 			<>
 				<MyHeader onLogout={handleLogout} />
 				<Row style={{ marginTop: '80px' }}>
 					<MovieView
-						key={selectedMovie.id}
 						movie={selectedMovie}
 						onBackClick={() => setSelectedMovie(null)}
 					/>
 					<hr />
 					<h2>Similar Movies : </h2>
-
 					{similarMovies.map((movie) => (
 						<Col
 							// style={{ border: '1px solid black' }}
 							md={3}
 							sm={6}>
 							<MovieCard
-								key={movie.id}
 								movie={movie}
 								onMovieClick={(newSelectedMovie) => {
 									setSelectedMovie(newSelectedMovie);

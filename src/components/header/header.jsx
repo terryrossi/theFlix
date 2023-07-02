@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { Navbar, Nav, Row, Container } from 'react-bootstrap';
-import { MainView } from '../main-view/main-view';
+// import { MainView } from '../main-view/main-view';
 
 export const MyHeader = ({ onLogout }) => {
 	const [user, setUser] = useState(null);

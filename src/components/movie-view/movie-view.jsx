@@ -20,7 +20,7 @@ export const MovieView = ({
 					<Card
 						style={{ marginTop: '10px', boxShadow: '1px 1px 10px 0px rgb(41, 39, 39)' }}
 						// onClick={() => onMovieClick(movie)}
-					>
+						key={movie.id}>
 						<Card.Img
 							variant='top'
 							src={movie.image}

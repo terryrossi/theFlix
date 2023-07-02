@@ -20,7 +20,6 @@ export const SignupView = () => {
 			password: password,
 			birthDate: birthDate,
 		};
-		// console.log('Avant le fetch data: ', data);
 		fetch(`https://theflix-api.herokuapp.com/users`, {
 			method: 'POST',
 			headers: {
@@ -29,9 +28,7 @@ export const SignupView = () => {
 			body: JSON.stringify(data),
 		})
 			.then((response) => response.json())
-			.then((data) => {
-				console.log('Signup response: ', data);
-			})
+			.then((data) => {})
 			.catch((e) => {
 				alert('something went wrong');
 			});
