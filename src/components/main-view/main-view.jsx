@@ -5,6 +5,8 @@ import { LoginView } from '../login-view/login-view';
 import { SignupView } from '../signup-view/signup-view';
 import { Row, Col } from 'react-bootstrap';
 import { MyHeader } from '../header/header';
+import { NavigationBar } from '../navigation-bar/navigation-bar';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 export const MainView = () => {
 	const [movies, setMovies] = useState([]);
@@ -54,114 +56,144 @@ export const MainView = () => {
 		const similarMovies = movies.filter((movie) => {
 			return movie.id !== selectedMovie.id && movie.genre === selectedMovie.genre;
 		});
-		return (
-			// When a MovieCard is clicked
-			<>
-				<MyHeader onLogout={handleLogout} />
-				<Row style={{ marginTop: '80px' }}>
-					<MovieView
-						movie={selectedMovie}
-						onBackClick={() => setSelectedMovie(null)}
-					/>
-					<hr />
-					<h2>Similar Movies : </h2>
-					{similarMovies.map((movie) => (
-						<Col
-							// style={{ border: '1px solid black' }}
-							md={3}
-							sm={6}>
-							<MovieCard
-								movie={movie}
-								onMovieClick={(newSelectedMovie) => {
-									setSelectedMovie(newSelectedMovie);
-								}}
-							/>
-						</Col>
-					))}
-				</Row>
-			</>
-		);
 	}
-
-	// Login or Signup
-
 	return (
-		<>
-			{!user ? (
-				<>
-					<MyHeader onLogout={handleLogout} />
-					<Row style={{ marginTop: '80px' }}>
-						<Col></Col>
-						<Col
-							md={6}
-							style={{
-								boxShadow: '1px 1px 10px 0px rgb(41, 39, 39)',
-								borderRadius: '9px',
-								padding: '15px',
-							}}>
-							<h4>Existing User. Please Login...</h4>
-							<LoginView
-								onLoggedIn={(user, token) => {
-									setUser(user);
-									setToken(token);
-								}}
-							/>
-						</Col>
-						<Col></Col>
-					</Row>
-					<Row style={{ marginTop: '30px' }}>
-						<Col></Col>
-						<Col
-							md={6}
-							style={{
-								// border: '1px solid black',
-								boxShadow: '1px 1px 10px 0px rgb(41, 39, 39)',
-								borderRadius: '9px',
-								padding: '15px',
-							}}>
-							<h4>New User. Please Signup...</h4>
-							<SignupView
-								onSignup={(user) => {
-									setUser(user);
-								}}
-							/>
-						</Col>
-						<Col></Col>
-					</Row>
-				</>
-			) : movies.length === 0 ? (
-				// If no Movie from API
-				<>
-					<MyHeader onLogout={handleLogout} />
-
-					<div>The list is empty!</div>
-				</>
-			) : (
-				// ... Else... If movies then render all MovieCards
-				// and Logout Button
-				<>
-					<MyHeader onLogout={handleLogout} />
-					<Row style={{ marginTop: '80px' }}>
-						{movies.map((movie) => (
-							<Col
-								// style={{ border: '1px solid black' }}
-								md={3}
-								sm={6}
-								xs={12}>
-								<MovieCard
-									key={movie.id}
-									movie={movie}
-									onMovieClick={(newSelectedMovie) => {
-										setSelectedMovie(newSelectedMovie);
-									}}
-								/>
-							</Col>
-						))}
-					</Row>
-
-					{/* <button onClick={handleLogout}>Logout</button> */}
-				</>
-			)}
-		</>
+		<BrowserRouter>
+			<NavigationBar
+				user={user}
+				onLogout={handleLogout}
+			/>
+			<Row className='justify-content-md-center'>
+				<Routes>
+					<Route
+						path='/signup'
+						element={
+							<>
+								{user ? (
+									<Navigate to='/' />
+								) : (
+									<Row style={{ marginTop: '30px' }}>
+										<Col></Col>
+										<Col
+											md={6}
+											style={{
+												// border: '1px solid black',
+												boxShadow: '1px 1px 10px 0px rgb(41, 39, 39)',
+												borderRadius: '9px',
+												padding: '15px',
+											}}>
+											<h4>New User. Please Signup...</h4>
+											<SignupView
+												onSignup={(user, token) => {
+													setUser(user);
+													setToken(token);
+												}}
+											/>
+										</Col>
+										<Col></Col>
+									</Row>
+								)}
+							</>
+						}
+					/>
+					<Route
+						path='/login'
+						element={
+							<>
+								{user ? (
+									<Navigate to='/' />
+								) : (
+									<Row style={{ marginTop: '80px' }}>
+										<Col></Col>
+										<Col
+											md={6}
+											style={{
+												boxShadow: '1px 1px 10px 0px rgb(41, 39, 39)',
+												borderRadius: '9px',
+												padding: '15px',
+											}}>
+											<h4>Existing User. Please Login...</h4>
+											<LoginView
+												onLoggedIn={(user, token) => {
+													setUser(user);
+													setToken(token);
+												}}
+											/>
+										</Col>
+										<Col></Col>
+									</Row>
+								)}
+							</>
+						}
+					/>
+					<Route
+						path='/movies/:movieId'
+						element={
+							<>
+								{!user ? (
+									<Navigate
+										to='/login'
+										replace
+									/>
+								) : movies.length === 0 ? (
+									<Col>The list is empty!</Col>
+								) : (
+									<Row style={{ marginTop: '80px' }}>
+										<MovieView movies={movies} />
+										<hr />
+										<h2>Similar Movies : </h2>
+										{
+											// similarMovies.map((movie) => (
+											// 	<Col
+											// 		// style={{ border: '1px solid black' }}
+											// 		md={3}
+											// 		sm={6}>
+											// 		<MovieCard
+											// 			movie={movie}
+											// 			onMovieClick={(newSelectedMovie) => {
+											// 				setSelectedMovie(newSelectedMovie);
+											// 			}}
+											// 		/>
+											// 	</Col>
+											// ))
+										}
+									</Row>
+								)}
+							</>
+						}
+					/>
+					<Route
+						path='/'
+						element={
+							<>
+								{user ? (
+									<>
+										<Row style={{ marginTop: '80px' }}>
+											{movies.map((movie) => (
+												<Col
+													// style={{ border: '1px solid black' }}
+													md={3}
+													sm={6}
+													xs={12}>
+													<MovieCard
+														// key={movie.id}
+														movie={movie}
+														// onMovieClick={(newSelectedMovie) => {
+														// 	setSelectedMovie(newSelectedMovie);
+														// }}
+													/>
+												</Col>
+											))}
+										</Row>
+									</>
+								) : (
+									<Col>Please Login...</Col>
+								)}
+							</>
+						}
+					/>
+				</Routes>
+			</Row>
+		</BrowserRouter>
 	);
 };

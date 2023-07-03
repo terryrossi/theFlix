@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 
-export const SignupView = () => {
+export const SignupView = ({ onSignup }) => {
 	const [userName, setUserName] = useState('');
 	const [password, setPassword] = useState('');
 	const [email, setEmail] = useState('');
@@ -12,7 +12,7 @@ export const SignupView = () => {
 	const handleSubmit = (event) => {
 		event.preventDefault();
 
-		const data = {
+		let user = {
 			firstName: firstName,
 			lastName: lastName,
 			userName: userName,
@@ -25,12 +25,16 @@ export const SignupView = () => {
 			headers: {
 				'content-type': 'application/json',
 			},
-			body: JSON.stringify(data),
+			body: JSON.stringify(user),
 		})
 			.then((response) => response.json())
-			.then((data) => {})
+			.then((data) => {
+				alert('Your Account has been Created. Go to Log In...');
+				user = {};
+			})
 			.catch((e) => {
-				alert('something went wrong');
+				alert('User already exist');
+				console.log(e);
 			});
 	};
 	return (
