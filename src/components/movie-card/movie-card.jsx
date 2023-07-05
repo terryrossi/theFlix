@@ -8,14 +8,13 @@ import { Link } from 'react-router-dom';
 //   return <div>{props.movie.title}</div>;
 // };
 // or...
-export const MovieCard = ({ movie }) => {
+export const MovieCard = ({ movie, onMovieClick }) => {
 	return (
 		<Link
+			onClick={() => onMovieClick(movie)}
 			to={`/movies/${encodeURIComponent(movie.id)}`}
 			style={{ textDecoration: 'none' }}>
-			<Card
-				style={{ marginTop: '10px', boxShadow: '1px 1px 10px 0px rgb(41, 39, 39)' }}
-				key={movie.id}>
+			<Card style={{ marginTop: '10px', boxShadow: '1px 1px 10px 0px rgb(41, 39, 39)' }}>
 				<Card.Img
 					variant='top'
 					src={movie.image}

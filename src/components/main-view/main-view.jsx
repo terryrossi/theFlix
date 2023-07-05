@@ -4,14 +4,13 @@ import { MovieView } from '../movie-view/movie-view';
 import { LoginView } from '../login-view/login-view';
 import { SignupView } from '../signup-view/signup-view';
 import { Row, Col } from 'react-bootstrap';
-import { MyHeader } from '../header/header';
 import { NavigationBar } from '../navigation-bar/navigation-bar';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 export const MainView = () => {
 	const [movies, setMovies] = useState([]);
 	const [selectedMovie, setSelectedMovie] = useState(null);
-	// const [similarMovies, setSimilarMovies] = useState([]);
+	const [similarMovies, setSimilarMovies] = useState([]);
 	const storedUser = JSON.parse(localStorage.getItem('user'));
 	const storedToken = localStorage.getItem('token');
 	const [user, setUser] = useState(storedUser ? storedUser : null);
@@ -43,6 +42,15 @@ export const MainView = () => {
 			});
 	}, [token]);
 
+	useEffect(() => {
+		if (selectedMovie && user) {
+			const similarMovies = movies.filter((movie) => {
+				return movie.id !== selectedMovie.id && movie.genre === selectedMovie.genre;
+			});
+			setSimilarMovies(similarMovies);
+		}
+	}, [selectedMovie, movies, user]);
+
 	// Logout
 	const handleLogout = (user) => {
 		setUser(null);
@@ -52,11 +60,6 @@ export const MainView = () => {
 		console.log('LOGGED OUT');
 	};
 
-	if (selectedMovie && user) {
-		const similarMovies = movies.filter((movie) => {
-			return movie.id !== selectedMovie.id && movie.genre === selectedMovie.genre;
-		});
-	}
 	return (
 		<BrowserRouter>
 			<NavigationBar
@@ -138,26 +141,30 @@ export const MainView = () => {
 								) : movies.length === 0 ? (
 									<Col>The list is empty!</Col>
 								) : (
-									<Row style={{ marginTop: '80px' }}>
-										<MovieView movies={movies} />
-										<hr />
-										<h2>Similar Movies : </h2>
-										{
-											// similarMovies.map((movie) => (
-											// 	<Col
-											// 		// style={{ border: '1px solid black' }}
-											// 		md={3}
-											// 		sm={6}>
-											// 		<MovieCard
-											// 			movie={movie}
-											// 			onMovieClick={(newSelectedMovie) => {
-											// 				setSelectedMovie(newSelectedMovie);
-											// 			}}
-											// 		/>
-											// 	</Col>
-											// ))
-										}
-									</Row>
+									<>
+										<Row style={{ marginTop: '80px' }}>
+											<MovieView movies={movies} />
+											<hr />
+
+											<h2>Similar Movies : </h2>
+										</Row>
+										<Row>
+											{similarMovies.map((movie) => (
+												<Col
+													// style={{ border: '1px solid black' }}
+													key={movie.id}
+													md={3}
+													sm={6}>
+													<MovieCard
+														movie={movie}
+														onMovieClick={(newSelectedMovie) => {
+															setSelectedMovie(newSelectedMovie);
+														}}
+													/>
+												</Col>
+											))}
+										</Row>
+									</>
 								)}
 							</>
 						}
@@ -172,6 +179,39 @@ export const MainView = () => {
 											{movies.map((movie) => (
 												<Col
 													// style={{ border: '1px solid black' }}
+													key={movie.id}
+													md={3}
+													sm={6}
+													xs={12}>
+													<MovieCard
+														// key={movie.id}
+														movie={movie}
+														onMovieClick={(newSelectedMovie) => {
+															setSelectedMovie(newSelectedMovie);
+														}}
+													/>
+												</Col>
+											))}
+										</Row>
+									</>
+								) : (
+									<Col>Please Login...</Col>
+								)}
+							</>
+						}
+					/>
+
+					<Route
+						path='/users/:userId/favorites'
+						element={
+							<>
+								{user ? (
+									<>
+										<Row style={{ marginTop: '80px' }}>
+											{movies.map((movie) => (
+												<Col
+													// style={{ border: '1px solid black' }}
+													key={movie.id}
 													md={3}
 													sm={6}
 													xs={12}>

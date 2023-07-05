@@ -8,7 +8,6 @@ import './movie-view.scss';
 export const MovieView = ({ movies }) => {
 	const { movieId } = useParams();
 	const movie = movies.find((b) => b.id === movieId);
-	// const [selectedMovie, setSelectedMovie] = useState(null);
 	return (
 		<>
 			<Row style={{ marginTop: '80px' }}>
@@ -17,10 +16,7 @@ export const MovieView = ({ movies }) => {
 					md={6}
 					sm={9}
 					xs={12}>
-					<Card
-						style={{ marginTop: '10px', boxShadow: '1px 1px 10px 0px rgb(41, 39, 39)' }}
-						// onClick={() => onMovieClick(movie)}
-						key={movie.id}>
+					<Card style={{ marginTop: '10px', boxShadow: '1px 1px 10px 0px rgb(41, 39, 39)' }}>
 						<Card.Img
 							variant='top'
 							src={movie.image}
