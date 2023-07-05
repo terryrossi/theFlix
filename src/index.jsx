@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client';
 import { MainView } from './components/main-view/main-view';
 import { Container } from 'react-bootstrap';
-import { MyHeader } from './components/header/header';
+// import { MyHeader } from './components/header/header';
 
 // Bootstrap CSS file
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -12,7 +12,6 @@ import './index.scss';
 const TheFlixApplication = () => {
 	return (
 		<Container>
-			{/* <MyHeader /> */}
 			<MainView />
 		</Container>
 	);

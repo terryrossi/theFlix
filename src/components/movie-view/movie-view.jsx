@@ -1,14 +1,13 @@
 // import { useState } from 'react';
-import './movie-view.scss';
 import { Row, Col, Card, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { useParams } from 'react-router';
+import './movie-view.scss';
 
-import { MainView } from '../main-view/main-view';
-export const MovieView = ({
-	movie,
-
-	onBackClick,
-}) => {
-	// const [selectedMovie, setSelectedMovie] = useState(null);
+// import { MainView } from '../main-view/main-view';
+export const MovieView = ({ movies }) => {
+	const { movieId } = useParams();
+	const movie = movies.find((b) => b.id === movieId);
 	return (
 		<>
 			<Row style={{ marginTop: '80px' }}>
@@ -17,10 +16,7 @@ export const MovieView = ({
 					md={6}
 					sm={9}
 					xs={12}>
-					<Card
-						style={{ marginTop: '10px', boxShadow: '1px 1px 10px 0px rgb(41, 39, 39)' }}
-						// onClick={() => onMovieClick(movie)}
-						key={movie.id}>
+					<Card style={{ marginTop: '10px', boxShadow: '1px 1px 10px 0px rgb(41, 39, 39)' }}>
 						<Card.Img
 							variant='top'
 							src={movie.image}
@@ -44,12 +40,16 @@ export const MovieView = ({
 					sm={9}
 					xs={12}>
 					<Card style={{ marginTop: '15px', marginBottom: '15px' }}>
-						<Button
-							variant='primary'
-							type='submit'
-							onClick={onBackClick}>
-							Back
-						</Button>
+						<Link
+							to={`/`}
+							style={{ width: '100%' }}>
+							<Button
+								style={{ width: '100%' }}
+								variant='primary'
+								type='submit'>
+								Back
+							</Button>
+						</Link>
 					</Card>
 				</Col>
 				<Col></Col>
