@@ -1,20 +1,28 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Navbar, Nav, Row, Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 // import { MainView } from '../main-view/main-view';
 
-export const NavigationBar = ({ user, onLogout }) => {
+export const NavigationBar = ({ onLogout }) => {
 	// const [user, setUser] = useState(null);
 	// const [token, setToken] = useState(null);
 
 	const storedUser = JSON.parse(localStorage.getItem('user'));
 	const storedToken = localStorage.getItem('token');
-
+	console.log('in navigationBar storedUser : ', storedUser);
 	const [expanded, setExpanded] = useState(false);
 
+	useEffect(() => {
+		if (!storedToken) {
+			return;
+		}
+		console.log('in navigationBar storedUser : ', storedUser);
+		console.log('in navigationBar userName : ', storedUser.userName);
+		console.log('in navigationBar token : ', storedToken);
+	}, []);
 	// Logout
-	const handleLogout = (user) => {
+	const handleLogout = () => {
 		toggleNavbar();
 		onLogout();
 	};
@@ -62,12 +70,14 @@ export const NavigationBar = ({ user, onLogout }) => {
 							onClick={toggleNavbar}>
 							Sign Up
 						</Nav.Link>
-						<Nav.Link
-							as={Link}
-							to='/profile'
-							onClick={toggleNavbar}>
-							Profile
-						</Nav.Link>
+						{storedUser && (
+							<Nav.Link
+								as={Link}
+								to={`/users/${encodeURIComponent(storedUser.userName)}`}
+								onClick={toggleNavbar}>
+								Profile
+							</Nav.Link>
+						)}
 
 						<Nav.Link onClick={handleLogout}>Logout</Nav.Link>
 					</Nav>
@@ -77,5 +87,3 @@ export const NavigationBar = ({ user, onLogout }) => {
 		</Row>
 	);
 };
-
-// export default MyHeader;

@@ -19,9 +19,16 @@ export const LoginView = ({ onLoggedIn }) => {
 			.then((response) => response.json())
 			.then((data) => {
 				if (data.user) {
+					console.log(
+						'in login. data.user data.token data.user.userName: ',
+						data.user,
+						data.token,
+						data.user.userName
+					);
 					localStorage.setItem('user', JSON.stringify(data.user));
 					localStorage.setItem('token', data.token);
-					onLoggedIn(data.user, data.token);
+					localStorage.setItem('userName', data.user.userName);
+					onLoggedIn(data.user.userName, data.token);
 				} else {
 					alert('No such User');
 				}
