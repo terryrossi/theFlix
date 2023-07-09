@@ -12,22 +12,41 @@ export const MainView = () => {
 	const [movies, setMovies] = useState([]);
 	const [selectedMovie, setSelectedMovie] = useState(null);
 	const [similarMovies, setSimilarMovies] = useState([]);
-	const storedUser = JSON.parse(localStorage.getItem('user'));
+
+	const [userName, setUserName] = useState(null);
+
+	// const storedUser = JSON.parse(localStorage.getItem('user'));
 	// const username = storedUser.userName;
 	const storedToken = localStorage.getItem('token');
-	console.log(storedUser, storedToken);
-	const [userName, setUserName] = useState(null);
-	const [token, setToken] = useState(storedToken ? storedToken : null);
-	const [user, setUser] = useState(null);
 
-	// Constructor
+	// const [user, setUser] = useState(storedUser || null);
+	const [token, setToken] = useState(storedToken || null);
+
+	// Constructors
+
+	// Check Logged In?
+	// useEffect(() => {
+	// 	// Check if there is a logged-in user in localStorage
+	// 	const storedUser = localStorage.getItem('user');
+	// 	if (storedUser) {
+	// 		const parsedUser = JSON.parse(storedUser);
+	// 		setUser(parsedUser);
+	// 	}
+	// 	const storedToken = localStorage.getItem('token');
+	// 	if (storedToken) {
+	// 		setToken(storedToken);
+	// 	}
+	// 	console.log('in MainView if storedUser: ', storedUser, storedToken);
+	// }, []);
+
+	// If Logged In... Fetch Movies
 	useEffect(() => {
 		if (!token) {
 			return;
 		}
 		// else...
 		fetch('https://theflix-api.herokuapp.com/movies', {
-			headers: { Authorization: `Bearer ${storedToken}` },
+			headers: { Authorization: `Bearer ${token}` },
 		})
 			.then((response) => response.json())
 			.then((data) => {
@@ -54,24 +73,6 @@ export const MainView = () => {
 			setSimilarMovies(similarMovies);
 		}
 	}, [selectedMovie, movies, token]);
-
-	// User Profile
-	// useEffect(() => {
-	// 	if (!token) {
-	// 		return;
-	// 	}
-	// 	// else...
-	// 	console.log('userName : ', userName);
-	// 	fetch(`https://theflix-api.herokuapp.com/users/${userName}`, {
-	// 		headers: { Authorization: `Bearer ${token}` },
-	// 	})
-	// 		.then((response) => response.json())
-	// 		.then((data) => {
-	// 			console.log('user from api: ', data);
-	// 			setUser(data);
-	// 			console.log('user in state: ', user);
-	// 		});
-	// }, [token]);
 
 	// Logout function
 	const handleLogout = () => {

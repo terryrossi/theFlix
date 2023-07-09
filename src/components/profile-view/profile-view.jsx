@@ -13,26 +13,16 @@ export const ProfileView = ({ user }) => {
 	const storedUser = JSON.parse(localStorage.getItem('user'));
 	const storedToken = localStorage.getItem('token');
 	const token = storedToken ? storedToken : '';
-	console.log('user in profile: ', storedUser);
+	console.log('user in profile: ', user);
 	useEffect(() => {
 		if (!token) {
 			return;
 		}
 		console.log('userName : ', userName);
-		// 	fetch(`https://theflix-api.herokuapp.com/users/${userName}`, {
-		// 		headers: { Authorization: `Bearer ${token}` },
-		// 	})
-		// 		.then((response) => response.json())
-		// 		.then((data) => {
-		// 			console.log('user from api: data', data);
-		// setUser(data);
+
 		setFirstName(storedUser.firstName);
 		setLastName(storedUser.lastName);
 		setEmail(storedUser.email);
-		// 		})
-		// 		.catch((error) => {
-		// 			console.error('Error fetching user data:', error);
-		// 		});
 	}, []);
 
 	const handleFirstNameChange = (event) => {
@@ -65,20 +55,34 @@ export const ProfileView = ({ user }) => {
 			},
 			body: JSON.stringify(updatedUser),
 		})
-			.then((response) => response.json())
-			.then((data) => {
-				alert('Your Account has been Modified');
-				console.log('in profile. response data : ', data);
-				// user = {};
+			.then((response) => {
+				// something went wrong?
+				if (!response.ok) {
+					// Inspect the response
+					response
+						.json()
+						// destructuring the response
+						.then(({ errors }) => {
+							// errors is an array
+							errors.forEach((err) => {
+								// Print one alert for each error founded
+								alert(
+									`STATUS CODE: ${response.status}\nMESSAGE: ${err.msg}\nFIELD: ${err.path}\nVALUE: ${err.value}`
+								);
+							});
+						});
+				} else {
+					// account has been modified successfully
+					// and the local storage needs to be in sync
+					alert('Your Account has been Modified');
+					localStorage.setItem('user', JSON.stringify(updatedUser));
+					// localStorage.setItem('user', updatedUser);
+				}
 			})
 			.catch((e) => {
-				// alert('User already exist');
-				console.log('error occured during modification of user : ', e);
+				console.log('error occurred during modification of user: ', e);
 			});
 	};
-	// if (!user) {
-	// 	return <div>Loading...</div>;
-	// }
 
 	return (
 		// <Form onSubmit={handleUpdateUser}>

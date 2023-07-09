@@ -6,12 +6,31 @@ import { Link } from 'react-router-dom';
 
 export const NavigationBar = ({ onLogout }) => {
 	// const [user, setUser] = useState(null);
-	// const [token, setToken] = useState(null);
+	const [token, setToken] = useState(null);
 
 	const storedUser = JSON.parse(localStorage.getItem('user'));
+	setUser(storedUser);
 	const storedToken = localStorage.getItem('token');
+	setToken(storedToken);
 	console.log('in navigationBar storedUser : ', storedUser);
 	const [expanded, setExpanded] = useState(false);
+
+	// Check Logged In?
+	// useEffect(() => {
+	// Check if there is a logged-in user in localStorage
+	// const storedUser = JSON.parse(localStorage.getItem('user'));
+	// const storedUser = localStorage.getItem('user');
+	// console.log(storedUser);
+	// if (storedUser) {
+	// 	const parsedUser = JSON.parse(storedUser);
+	// setUser(storedUser);
+	// }
+	// 	const storedToken = localStorage.getItem('token');
+	// 	if (storedToken) {
+	// 		setToken(storedToken);
+	// 	}
+	// 	console.log('in NavBar useEffect. storedUser, token? ', storedUser, storedToken);
+	// }, []);
 
 	useEffect(() => {
 		if (!storedToken) {
@@ -70,7 +89,7 @@ export const NavigationBar = ({ onLogout }) => {
 							onClick={toggleNavbar}>
 							Sign Up
 						</Nav.Link>
-						{storedUser && (
+						{token && (
 							<Nav.Link
 								as={Link}
 								to={`/users/${encodeURIComponent(storedUser.userName)}`}
