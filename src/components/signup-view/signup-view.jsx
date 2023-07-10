@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 
 export const SignupView = ({ onSignup }) => {
+	// export const SignupView = () => {
 	const [userName, setUserName] = useState('');
 	const [password, setPassword] = useState('');
 	const [email, setEmail] = useState('');
@@ -28,8 +29,32 @@ export const SignupView = ({ onSignup }) => {
 			body: JSON.stringify(user),
 		})
 			.then((response) => response.json())
-			.then((data) => {
-				alert('Your Account has been Created. Go to Log In...');
+			.then((user) => {
+				console.log(user);
+				if (user) {
+					fetch(
+						`https://theflix-api.herokuapp.com/login?userName=${userName}&password=${password}`,
+						{
+							method: 'POST',
+						}
+					)
+						.then((response) => response.json())
+						.then((data) => {
+							if (data.user) {
+								localStorage.setItem('user', JSON.stringify(data.user));
+								localStorage.setItem('token', data.token);
+								// setUser(data.user);
+								console.log('User Logged In : ', data.user, data.token);
+								alert('You are Logged In. Welcome!');
+								onSignup(data.user, data.token);
+							}
+						})
+						.catch((e) => {
+							alert('something went wrong in Login');
+						});
+
+					alert('Your Account has been Created...');
+				}
 				user = {};
 			})
 			.catch((e) => {

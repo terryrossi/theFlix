@@ -3,38 +3,29 @@ import { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 
 export const LoginView = ({ onLoggedIn }) => {
+	// export const LoginView = () => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
+	// const [user, setUser] = useState(null);
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
 
 		fetch(`https://theflix-api.herokuapp.com/login?userName=${username}&password=${password}`, {
 			method: 'POST',
-			// header: {
-			// 	'content-type': 'application/json',
-			// },
-			// body: JSON.stringify(data),
 		})
 			.then((response) => response.json())
 			.then((data) => {
 				if (data.user) {
-					console.log(
-						'in login. data.user data.token data.user.userName: ',
-						data.user,
-						data.token,
-						data.user.userName
-					);
 					localStorage.setItem('user', JSON.stringify(data.user));
 					localStorage.setItem('token', data.token);
-					// localStorage.setItem('username', data.user.userName);
+					// setUser(data.user);
+					console.log('User Logged In : ', data.user, data.token);
 					onLoggedIn(data.user, data.token);
-				} else {
-					alert('No such User');
 				}
 			})
 			.catch((e) => {
-				alert('something went wrong');
+				alert('something went wrong in Login');
 			});
 	};
 

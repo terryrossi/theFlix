@@ -4,22 +4,17 @@ import { Form, Button } from 'react-bootstrap';
 
 export const ProfileView = ({ user }) => {
 	const { userName } = useParams();
-	// const [user, setUser] = useState(null);
 	const [email, setEmail] = useState('');
-	// const [birthDate, setBirthDate] = useState('');
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
 
 	const storedUser = JSON.parse(localStorage.getItem('user'));
 	const storedToken = localStorage.getItem('token');
 	const token = storedToken ? storedToken : '';
-	console.log('user in profile: ', user);
 	useEffect(() => {
 		if (!token) {
 			return;
 		}
-		console.log('userName : ', userName);
-
 		setFirstName(storedUser.firstName);
 		setLastName(storedUser.lastName);
 		setEmail(storedUser.email);
@@ -42,11 +37,8 @@ export const ProfileView = ({ user }) => {
 		updatedUser.lastName = lastName;
 		updatedUser.userName = userName;
 		updatedUser.email = email;
-		// setUser(updatedUser);
 
 		// Update user data via API
-		console.log('before fetch PATH data, user, token : ', updatedUser, token);
-		console.log(updatedUser.password);
 		fetch(`https://theflix-api.herokuapp.com/users/`, {
 			method: 'PATCH',
 			headers: {
@@ -114,36 +106,6 @@ export const ProfileView = ({ user }) => {
 					required
 				/>
 			</Form.Group>
-			{/* <Form.Group controlId='formBirthDate'>
-				<Form.Label>BirthDate:</Form.Label>
-				<Form.Control
-					type='date'
-					value={birthDate}
-					onChange={(e) => setBirthDate(e.target.value)}
-					required
-				/>
-			</Form.Group> */}
-			{/* <Form.Group controlId='formNewUserName'>
-				<Form.Label>UserName:</Form.Label>
-				<Form.Control
-					type='text'
-					minLength={5}
-					value={userName}
-					onChange={(e) => setUserName(e.target.value)}
-					required
-				/>
-			</Form.Group>
-
-			<Form.Group controlId='formNewPassword'>
-				<Form.Label>Password:</Form.Label>
-				<Form.Control
-					type='password'
-					minLength={8}
-					value={password}
-					onChange={(e) => setPassword(e.target.value)}
-					required
-				/>
-			</Form.Group> */}
 
 			<Button
 				variant='primary'

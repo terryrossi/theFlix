@@ -13,31 +13,26 @@ export const MainView = () => {
 	const [selectedMovie, setSelectedMovie] = useState(null);
 	const [similarMovies, setSimilarMovies] = useState([]);
 
-	const [userName, setUserName] = useState(null);
-
-	// const storedUser = JSON.parse(localStorage.getItem('user'));
-	// const username = storedUser.userName;
-	const storedToken = localStorage.getItem('token');
-
-	// const [user, setUser] = useState(storedUser || null);
-	const [token, setToken] = useState(storedToken || null);
+	const [user, setUser] = useState(null);
+	const [token, setToken] = useState(null);
 
 	// Constructors
 
 	// Check Logged In?
-	// useEffect(() => {
-	// 	// Check if there is a logged-in user in localStorage
-	// 	const storedUser = localStorage.getItem('user');
-	// 	if (storedUser) {
-	// 		const parsedUser = JSON.parse(storedUser);
-	// 		setUser(parsedUser);
-	// 	}
-	// 	const storedToken = localStorage.getItem('token');
-	// 	if (storedToken) {
-	// 		setToken(storedToken);
-	// 	}
-	// 	console.log('in MainView if storedUser: ', storedUser, storedToken);
-	// }, []);
+	useEffect(() => {
+		// Check if there is a logged-in user in localStorage
+		const storedUser = localStorage.getItem('user') ? localStorage.getItem('user') : null;
+		// console.log('storedUser : ', storedUser);
+		if (storedUser) {
+			const parsedUser = storedUser ? JSON.parse(storedUser) : null;
+			setUser(parsedUser);
+		}
+		const storedToken = localStorage.getItem('token');
+		if (storedToken) {
+			setToken(storedToken);
+		}
+		// console.log('in MainView (user, token): ', user, token);
+	}, [token]);
 
 	// If Logged In... Fetch Movies
 	useEffect(() => {
@@ -80,7 +75,7 @@ export const MainView = () => {
 		setToken(null);
 		setSelectedMovie(null);
 		localStorage.clear();
-		console.log('LOGGED OUT : ', user, token, storedUser, storedToken);
+		// console.log('LOGGED OUT : ', user, token);
 	};
 
 	return (
@@ -98,7 +93,7 @@ export const MainView = () => {
 								{token ? (
 									<Navigate to='/' />
 								) : (
-									<Row style={{ marginTop: '30px' }}>
+									<Row style={{ marginTop: '80px' }}>
 										<Col></Col>
 										<Col
 											md={6}
