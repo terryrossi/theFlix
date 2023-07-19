@@ -8,34 +8,31 @@ import { Row, Col } from 'react-bootstrap';
 import { NavigationBar } from '../navigation-bar/navigation-bar';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { setMovies } from '../../redux/reducers/movies';
+import { setUser } from '../../redux/reducers/user';
+import { setSelectedMovie } from '../../redux/reducers/selectedMovie';
+
 export const MainView = () => {
-	const [movies, setMovies] = useState([]);
-	const [selectedMovie, setSelectedMovie] = useState(null);
+	const movies = useSelector((state) => state.movies);
+	console.log('in Mainview => state.movies.value): ', movies);
+	const selectedMovie = useSelector((state) => state.selectedMovie);
+	console.log('in Mainview => state.selectedMovie): ', selectedMovie);
+
 	const [similarMovies, setSimilarMovies] = useState([]);
 
-	const [user, setUser] = useState(null);
-	const [token, setToken] = useState(null);
+	const user = useSelector((state) => state.user);
+	console.log('in mainview, user : ', user);
+
+	const dispatch = useDispatch();
+
+	let token = localStorage.getItem('token');
 
 	// Constructors
 
-	// Check Logged In?
-	useEffect(() => {
-		// Check if there is a logged-in user in localStorage
-		const storedUser = localStorage.getItem('user') ? localStorage.getItem('user') : null;
-		// console.log('storedUser : ', storedUser);
-		if (storedUser) {
-			const parsedUser = storedUser ? JSON.parse(storedUser) : null;
-			setUser(parsedUser);
-		}
-		const storedToken = localStorage.getItem('token');
-		if (storedToken) {
-			setToken(storedToken);
-		}
-		// console.log('in MainView (user, token): ', user, token);
-	}, [token]);
-
 	// If Logged In... Fetch Movies
 	useEffect(() => {
+		console.log('token and user in useeffect mainview : ', token, user);
 		if (!token) {
 			return;
 		}
@@ -45,7 +42,7 @@ export const MainView = () => {
 		})
 			.then((response) => response.json())
 			.then((data) => {
-				const movies = data.map((movie) => {
+				const moviesFromApi = data.map((movie) => {
 					return {
 						id: movie._id,
 						title: movie.title,
@@ -56,9 +53,10 @@ export const MainView = () => {
 						// actors: movie.actors?.[0],
 					};
 				});
-				setMovies(movies);
+				// setMovies(movies);
+				dispatch(setMovies(moviesFromApi));
 			});
-	}, [token]);
+	}, [user]);
 
 	useEffect(() => {
 		if (selectedMovie && token) {
@@ -70,20 +68,18 @@ export const MainView = () => {
 	}, [selectedMovie, movies, token]);
 
 	// Logout function
-	const handleLogout = () => {
-		setUser(null);
-		setToken(null);
-		setSelectedMovie(null);
-		localStorage.clear();
-		// console.log('LOGGED OUT : ', user, token);
-	};
+	// const handleLogout = () => {
+	// 	dispatch(setUser(null));
+	// setToken(null);
+	// setSelectedMovie(null);
+	// let token = null;
+	// localStorage.clear();
+	// console.log('LOGGED OUT : ', user, token);
+	// };
 
 	return (
 		<BrowserRouter>
-			<NavigationBar
-				// user={user}
-				onLogout={handleLogout}
-			/>
+			<NavigationBar />
 			<Row className='justify-content-md-center'>
 				<Routes>
 					<Route
@@ -93,7 +89,7 @@ export const MainView = () => {
 								{token ? (
 									<Navigate to='/' />
 								) : (
-									<Row style={{ marginTop: '80px' }}>
+									<Row style={{ marginTop: '100px' }}>
 										<Col></Col>
 										<Col
 											md={6}
@@ -104,12 +100,7 @@ export const MainView = () => {
 												padding: '15px',
 											}}>
 											<h4>New User. Please Signup...</h4>
-											<SignupView
-												onSignup={(user, token) => {
-													setUser(user);
-													setToken(token);
-												}}
-											/>
+											<SignupView />
 										</Col>
 										<Col></Col>
 									</Row>
@@ -124,7 +115,7 @@ export const MainView = () => {
 								{token ? (
 									<Navigate to='/' />
 								) : (
-									<Row style={{ marginTop: '80px' }}>
+									<Row style={{ marginTop: '100px' }}>
 										<Col></Col>
 										<Col
 											md={6}
@@ -134,12 +125,7 @@ export const MainView = () => {
 												padding: '15px',
 											}}>
 											<h4>Existing User. Please Login...</h4>
-											<LoginView
-												onLoggedIn={(user, token) => {
-													setUser(user);
-													setToken(token);
-												}}
-											/>
+											<LoginView />
 										</Col>
 										<Col></Col>
 									</Row>
@@ -160,8 +146,9 @@ export const MainView = () => {
 									<Col>The list is empty!</Col>
 								) : (
 									<>
-										<Row style={{ marginTop: '80px' }}>
-											<MovieView movies={movies} />
+										<Row style={{ marginTop: '100px' }}>
+											{/* <MovieView movies={movies} /> */}
+											<MovieView />
 											<hr />
 
 											<h2>Similar Movies : </h2>
@@ -171,13 +158,14 @@ export const MainView = () => {
 												<Col
 													// style={{ border: '1px solid black' }}
 													key={movie.id}
-													md={3}
-													sm={6}>
+													lg={3}
+													md={4}
+													xs={6}>
 													<MovieCard
 														movie={movie}
-														onMovieClick={(newSelectedMovie) => {
-															setSelectedMovie(newSelectedMovie);
-														}}
+														// onMovieClick={(newSelectedMovie) => {
+														// 	setSelectedMovie(newSelectedMovie);
+														// }}
 													/>
 												</Col>
 											))}
@@ -193,14 +181,14 @@ export const MainView = () => {
 							<>
 								{token ? (
 									<>
-										<Row style={{ marginTop: '80px' }}>
+										<Row style={{ marginTop: '90px' }}>
 											{movies.map((movie) => (
 												<Col
 													// style={{ border: '1px solid black' }}
 													key={movie.id}
-													md={3}
-													sm={6}
-													xs={12}>
+													lg={3}
+													md={4}
+													xs={6}>
 													<MovieCard
 														// key={movie.id}
 														movie={movie}
@@ -225,7 +213,7 @@ export const MainView = () => {
 							<>
 								{token ? (
 									<>
-										<Row style={{ marginTop: '80px' }}>
+										<Row style={{ marginTop: '100px' }}>
 											<Col></Col>
 											<Col
 												md={6}
@@ -236,7 +224,7 @@ export const MainView = () => {
 													padding: '15px',
 												}}>
 												<h4>User Profile</h4>
-												<ProfileView user={user} />
+												<ProfileView />
 											</Col>
 											<Col></Col>
 										</Row>

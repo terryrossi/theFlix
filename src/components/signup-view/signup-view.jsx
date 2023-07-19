@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 
-export const SignupView = ({ onSignup }) => {
-	// export const SignupView = () => {
+// export const SignupView = ({ onSignup }) => {
+export const SignupView = () => {
 	const [userName, setUserName] = useState('');
 	const [password, setPassword] = useState('');
 	const [email, setEmail] = useState('');
@@ -41,12 +41,14 @@ export const SignupView = ({ onSignup }) => {
 						.then((response) => response.json())
 						.then((data) => {
 							if (data.user) {
-								localStorage.setItem('user', JSON.stringify(data.user));
+								// localStorage.setItem('user', JSON.stringify(data.user));
 								localStorage.setItem('token', data.token);
+								dispatch(setUser(data.user));
 								// setUser(data.user);
-								console.log('User Logged In : ', data.user, data.token);
+								// console.log('User Logged In : ', data.user, data.token);
 								alert('You are Logged In. Welcome!');
-								onSignup(data.user, data.token);
+								alert('You are being redirected to the home page...');
+								// onSignup(data.user, data.token);
 							}
 						})
 						.catch((e) => {
