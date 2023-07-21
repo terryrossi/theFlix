@@ -12,6 +12,7 @@ export const MoviesList = () => {
 		.toLowerCase();
 
 	const filteredMovies = movies.filter((movie) => movie.title.toLowerCase().includes(filter));
+	console.log('XXXXXXX in movies-list, filteredMovies: ', filteredMovies);
 
 	return (
 		<>
@@ -19,25 +20,23 @@ export const MoviesList = () => {
 				<MoviesFilter />
 			</Row>
 			<Row>
-				{movies.length === 0 ? (
-					<Col>The list is empty!</Col>
-				) : (
-					filteredMovies.map((movie) => {
-						<Col
-							key={movie.id}
-							lg={3}
-							md={4}
-							xs={6}>
-							<MovieCard
-								// key={movie.id}
-								movie={movie}
-								// onMovieClick={(newSelectedMovie) => {
-								//   setSelectedMovie(newSelectedMovie);
-								// }}
-							/>
-						</Col>;
-					})
-				)}
+				{/* <Col>List of Movies...</Col> */}
+				{filteredMovies.map((movie) => (
+					<Col
+						key={movie.id}
+						lg={3}
+						md={4}
+						xs={6}>
+						<MovieCard
+							// key={movie.id}
+							movie={movie}
+							// 	onMovieClick={(newSelectedMovie) => {
+							// 		setSelectedMovie(newSelectedMovie);
+							// 	}
+							// }
+						/>
+					</Col>
+				))}
 			</Row>
 		</>
 	);
