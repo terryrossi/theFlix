@@ -27,7 +27,7 @@ export const NavigationBar = () => {
 	console.log('in navbar, user, userName : ', user, userName);
 
 	// console.log('in NavBar user, token: ', user, token);
-	dispatch = useDispatch();
+	let dispatch = useDispatch();
 
 	// Logout
 	const handleLogout = () => {

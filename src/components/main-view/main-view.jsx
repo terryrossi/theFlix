@@ -12,9 +12,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setMovies } from '../../redux/reducers/movies';
 import { setUser } from '../../redux/reducers/user';
 import { setSelectedMovie } from '../../redux/reducers/selectedMovie';
+import { MoviesList } from '../movies-list/movies-list';
 
 export const MainView = () => {
-	const movies = useSelector((state) => state.movies);
+	const movies = useSelector((state) => state.movies.list);
 	console.log('in Mainview => state.movies.value): ', movies);
 	const selectedMovie = useSelector((state) => state.selectedMovie);
 	console.log('in Mainview => state.selectedMovie): ', selectedMovie);
@@ -182,9 +183,9 @@ export const MainView = () => {
 								{token ? (
 									<>
 										<Row style={{ marginTop: '90px' }}>
-											{movies.map((movie) => (
+											<MoviesList />
+											{/* {movies.map((movie) => (
 												<Col
-													// style={{ border: '1px solid black' }}
 													key={movie.id}
 													lg={3}
 													md={4}
@@ -197,7 +198,7 @@ export const MainView = () => {
 														}}
 													/>
 												</Col>
-											))}
+											))} */}
 										</Row>
 									</>
 								) : (
