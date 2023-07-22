@@ -3,19 +3,18 @@ import { useParams } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { setMovies } from '../../redux/reducers/movies';
 import { setUser } from '../../redux/reducers/user';
+import { MoviesList } from '../movies-list/movies-list';
 
 export const ProfileView = () => {
 	const { userName } = useParams();
 
-	// const user = useSelector((state) => state.user);
 	let user = JSON.parse(localStorage.getItem('user'));
-	console.log('in profile, user : ', user);
 
 	const token = localStorage.getItem('token');
 
-	// const [updatedUser, setUpdateUser] = useState([])
+	const movies = useSelector((state) => state.movies.list);
+
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
 	const [email, setEmail] = useState('');
@@ -23,6 +22,12 @@ export const ProfileView = () => {
 	const [formHasChanged, setFormHasChanged] = useState(false);
 
 	const dispatch = useDispatch();
+
+	const favoriteMovies = user.favoriteMovies.map((movie) => {
+		return movie;
+	});
+
+	console.log('Favorite Movies : ', favoriteMovies);
 
 	useEffect(() => {
 		if (!token) {
@@ -49,21 +54,13 @@ export const ProfileView = () => {
 	};
 
 	const handleUpdateUser = () => {
-		console.log('executing handleUpdateUser...');
-		console.log('formHasChanged : ', formHasChanged);
-
 		if (formHasChanged) {
-			console.log('in formHasChanged, user : ', user);
-			console.log('in formHasChanged, user : ', user);
 			const updatedUser = {
 				...user,
-
 				firstName: firstName,
 				lastName: lastName,
 				email: email,
 			};
-
-			console.log('in Profile-view, updatedUser = ', updatedUser);
 
 			// Update user data via API
 			fetch(`https://theflix-api.herokuapp.com/users/`, {
@@ -96,8 +93,6 @@ export const ProfileView = () => {
 						alert('Your Account has been Updated');
 						localStorage.setItem('user', JSON.stringify(updatedUser));
 						dispatch(setUser(updatedUser));
-
-						// localStorage.setItem('user', updatedUser);
 					}
 				})
 				.catch((e) => {
@@ -106,7 +101,6 @@ export const ProfileView = () => {
 		}
 	};
 	return (
-		// <Form onSubmit={handleUpdateUser}>
 		<Form>
 			<Form.Group controlId='formFirstName'>
 				<Form.Label>FirstName:</Form.Label>
@@ -138,7 +132,6 @@ export const ProfileView = () => {
 
 			<Button
 				variant='primary'
-				// type='submit'
 				style={{ marginTop: '15px' }}
 				onClick={handleUpdateUser}
 				disabled={!formHasChanged}>

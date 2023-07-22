@@ -1,20 +1,15 @@
-// import { useState } from 'react';
 import { Row, Col, Card, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router';
 import './movie-view.scss';
 import { useSelector } from 'react-redux';
 
-// import { MainView } from '../main-view/main-view';
-// export const MovieView = ({ movies }) => {
 export const MovieView = () => {
 	const { movieId } = useParams();
 
 	const movies = useSelector((state) => state.movies.list);
 
 	const movie = movies.find((b) => b.id === movieId);
-
-	console.log('in MovieView : movie = ', movie);
 
 	return (
 		<>

@@ -10,28 +10,20 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { setMovies } from '../../redux/reducers/movies';
-import { setUser } from '../../redux/reducers/user';
-import { setSelectedMovie } from '../../redux/reducers/selectedMovie';
 import { MoviesList } from '../movies-list/movies-list';
 
 export const MainView = () => {
 	const movies = useSelector((state) => state.movies.list);
-	console.log('in Mainview => state.movies.value): ', movies);
 
 	const selectedMovie = useSelector((state) => state.selectedMovie);
-	console.log('in Mainview => state.selectedMovie): ', selectedMovie);
 
 	const [similarMovies, setSimilarMovies] = useState([]);
 
 	let token = localStorage.getItem('token');
 	let storedUser = JSON.parse(localStorage.getItem('user'));
 
-	// const user = storedUser ? storedUser : useSelector((state) => state.user);
 	const stateUser = useSelector((state) => state.user);
-
 	const user = stateUser ? stateUser : storedUser;
-
-	console.log('in mainview, stateUser, storedUser : ', stateUser, storedUser);
 
 	const dispatch = useDispatch();
 
@@ -39,7 +31,6 @@ export const MainView = () => {
 
 	// If Logged In... Fetch Movies
 	useEffect(() => {
-		console.log('token and user in useeffect mainview : ', token, user);
 		if (!token || !user) {
 			return;
 		}
@@ -60,7 +51,6 @@ export const MainView = () => {
 						// actors: movie.actors?.[0],
 					};
 				});
-				// setMovies(movies);
 				dispatch(setMovies(moviesFromApi));
 			});
 	}, []);
@@ -73,16 +63,6 @@ export const MainView = () => {
 			setSimilarMovies(similarMovies);
 		}
 	}, [selectedMovie, movies, token]);
-
-	// Logout function
-	// const handleLogout = () => {
-	// 	dispatch(setUser(null));
-	// setToken(null);
-	// setSelectedMovie(null);
-	// let token = null;
-	// localStorage.clear();
-	// console.log('LOGGED OUT : ', user, token);
-	// };
 
 	return (
 		<BrowserRouter>
@@ -101,7 +81,6 @@ export const MainView = () => {
 										<Col
 											md={6}
 											style={{
-												// border: '1px solid black',
 												boxShadow: '1px 1px 10px 0px rgb(41, 39, 39)',
 												borderRadius: '9px',
 												padding: '15px',
@@ -154,7 +133,6 @@ export const MainView = () => {
 								) : (
 									<>
 										<Row style={{ marginTop: '100px' }}>
-											{/* <MovieView movies={movies} /> */}
 											<MovieView />
 											<hr />
 
@@ -163,17 +141,11 @@ export const MainView = () => {
 										<Row>
 											{similarMovies.map((movie) => (
 												<Col
-													// style={{ border: '1px solid black' }}
 													key={movie.id}
 													lg={3}
 													md={4}
 													xs={6}>
-													<MovieCard
-														movie={movie}
-														// onMovieClick={(newSelectedMovie) => {
-														// 	setSelectedMovie(newSelectedMovie);
-														// }}
-													/>
+													<MovieCard movie={movie} />
 												</Col>
 											))}
 										</Row>
@@ -190,21 +162,6 @@ export const MainView = () => {
 									<>
 										<Row style={{ marginTop: '90px' }}>
 											<MoviesList />
-											{/* {movies.map((movie) => (
-												<Col
-													key={movie.id}
-													lg={3}
-													md={4}
-													xs={6}>
-													<MovieCard
-														// key={movie.id}
-														movie={movie}
-														onMovieClick={(newSelectedMovie) => {
-															setSelectedMovie(newSelectedMovie);
-														}}
-													/>
-												</Col>
-											))} */}
 										</Row>
 									</>
 								) : (

@@ -22,15 +22,18 @@ export const MovieCard = ({ movie }) => {
 			onClick={() => dispatch(setSelectedMovie(movie))}
 			to={`/movies/${encodeURIComponent(movie.id)}`}
 			style={{ textDecoration: 'none' }}>
-			<Card style={{ marginTop: '10px', boxShadow: '1px 1px 10px 0px rgb(41, 39, 39)' }}>
+			<Card
+				style={{
+					marginTop: '10px',
+					boxShadow: '1px 1px 10px 0px rgb(41, 39, 39)',
+				}}>
 				<Card.Img
 					variant='top'
 					src={movie.image}
 					alt={'Poster of the movie'}
 					style={{
-						// width: '100%',
+						width: '100%',
 						// height: '100%',
-						height: '350px',
 						objectFit: 'cover',
 						// borderRadius: '9px',
 						// padding: '15px',
