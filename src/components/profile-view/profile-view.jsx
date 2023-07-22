@@ -9,15 +9,16 @@ import { setUser } from '../../redux/reducers/user';
 export const ProfileView = () => {
 	const { userName } = useParams();
 
-	const user = useSelector((state) => state.user);
+	// const user = useSelector((state) => state.user);
+	let user = JSON.parse(localStorage.getItem('user'));
 	console.log('in profile, user : ', user);
+
+	const token = localStorage.getItem('token');
 
 	// const [updatedUser, setUpdateUser] = useState([])
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
 	const [email, setEmail] = useState('');
-
-	const token = localStorage.getItem('token');
 
 	const [formHasChanged, setFormHasChanged] = useState(false);
 
@@ -32,7 +33,7 @@ export const ProfileView = () => {
 			setLastName(user.lastName);
 			setEmail(user.email);
 		}
-	}, [user]);
+	}, []);
 
 	const handleFirstNameChange = (event) => {
 		setFirstName(event.target.value);
@@ -46,14 +47,6 @@ export const ProfileView = () => {
 		setEmail(event.target.value);
 		setFormHasChanged(true);
 	};
-
-	// const formHasChanged = () => {
-	//   return (
-	//     firstName !== user.firstName ||
-	//     lastName !== user.lastName ||
-	//     email !== user.email
-	//   );
-	// };
 
 	const handleUpdateUser = () => {
 		console.log('executing handleUpdateUser...');
@@ -145,7 +138,7 @@ export const ProfileView = () => {
 
 			<Button
 				variant='primary'
-				type='submit'
+				// type='submit'
 				style={{ marginTop: '15px' }}
 				onClick={handleUpdateUser}
 				disabled={!formHasChanged}>

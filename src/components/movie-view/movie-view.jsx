@@ -28,7 +28,7 @@ export const MovieView = () => {
 					lg={8}
 					xl={6}>
 					<Card style={{ marginTop: '10px', boxShadow: '1px 1px 10px 0px rgb(41, 39, 39)' }}>
-						<Row nogutters>
+						<Row nogutters='true'>
 							<Col md={4}>
 								<Card.Img
 									variant='top'

@@ -1,15 +1,13 @@
 import React from 'react';
 import { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
-import { setMovies } from '../../redux/reducers/movies';
+import { useDispatch } from 'react-redux';
 import { setUser } from '../../redux/reducers/user';
 
 // export const LoginView = ({ onLoggedIn }) => {
 export const LoginView = () => {
 	const dispatch = useDispatch();
 
-	// export const LoginView = () => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	// const [user, setUser] = useState(null);
@@ -23,11 +21,13 @@ export const LoginView = () => {
 			.then((response) => response.json())
 			.then((data) => {
 				if (data.token) {
-					// localStorage.setItem('user', JSON.stringify(data.user));
+					localStorage.setItem('user', JSON.stringify(data.user));
 					localStorage.setItem('token', data.token);
 					dispatch(setUser(data.user));
 					// setUser(data.user);
-					console.log('Logged In as : ', data.user.userName);
+					console.log('Logged In as username: ', data.user.userName);
+					// console.log('Logged In as user: ', user);
+
 					// onLoggedIn(data.user, data.token);
 				}
 			})

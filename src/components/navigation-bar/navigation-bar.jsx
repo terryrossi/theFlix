@@ -12,16 +12,19 @@ import { setSelectedMovie } from '../../redux/reducers/selectedMovie';
 export const NavigationBar = () => {
 	const [expanded, setExpanded] = useState(false);
 
-	const movies = useSelector((state) => state.movies);
-	console.log('in navbar, movies : ', movies);
+	// const movies = useSelector((state) => state.movies);
+	// console.log('in navbar, movies : ', movies);
 
-	const selectedMovie = useSelector((state) => state.selectedMovie);
-	console.log('in navbar, selectedMovie :  ', selectedMovie);
+	// const selectedMovie = useSelector((state) => state.selectedMovie);
+	// console.log('in navbar, selectedMovie :  ', selectedMovie);
 
-	const user = useSelector((state) => state.user);
-	console.log('in navBar, user : ', user);
+	let user = JSON.parse(localStorage.getItem('user'));
 
 	let token = localStorage.getItem('token');
+
+	// const user = useSelector((state) => state.user);
+	// const user = storedUser ? storedUser : useSelector((state) => state.user);
+
 	const userName = user ? user.userName : '';
 
 	console.log('in navbar, user, userName : ', user, userName);

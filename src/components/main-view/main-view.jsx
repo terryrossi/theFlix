@@ -17,24 +17,30 @@ import { MoviesList } from '../movies-list/movies-list';
 export const MainView = () => {
 	const movies = useSelector((state) => state.movies.list);
 	console.log('in Mainview => state.movies.value): ', movies);
+
 	const selectedMovie = useSelector((state) => state.selectedMovie);
 	console.log('in Mainview => state.selectedMovie): ', selectedMovie);
 
 	const [similarMovies, setSimilarMovies] = useState([]);
 
-	const user = useSelector((state) => state.user);
-	console.log('in mainview, user : ', user);
+	let token = localStorage.getItem('token');
+	let storedUser = JSON.parse(localStorage.getItem('user'));
+
+	// const user = storedUser ? storedUser : useSelector((state) => state.user);
+	const stateUser = useSelector((state) => state.user);
+
+	const user = stateUser ? stateUser : storedUser;
+
+	console.log('in mainview, stateUser, storedUser : ', stateUser, storedUser);
 
 	const dispatch = useDispatch();
-
-	let token = localStorage.getItem('token');
 
 	// Constructors
 
 	// If Logged In... Fetch Movies
 	useEffect(() => {
 		console.log('token and user in useeffect mainview : ', token, user);
-		if (!token) {
+		if (!token || !user) {
 			return;
 		}
 		// else...
@@ -57,7 +63,7 @@ export const MainView = () => {
 				// setMovies(movies);
 				dispatch(setMovies(moviesFromApi));
 			});
-	}, [user]);
+	}, []);
 
 	useEffect(() => {
 		if (selectedMovie && token) {
