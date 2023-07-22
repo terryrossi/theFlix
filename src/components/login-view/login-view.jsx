@@ -25,7 +25,10 @@ export const LoginView = () => {
 					localStorage.setItem('token', data.token);
 					dispatch(setUser(data.user));
 					// setUser(data.user);
-					console.log('Logged In as username: ', data.user.userName);
+					console.log('Logged In as: ', data.user.userName);
+
+					fetchFavoriteMovies(data.user.favorites); // Fetch favorite movies
+
 					// console.log('Logged In as user: ', user);
 
 					// onLoggedIn(data.user, data.token);
