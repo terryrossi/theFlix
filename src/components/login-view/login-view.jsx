@@ -25,18 +25,43 @@ export const LoginView = () => {
 					localStorage.setItem('token', data.token);
 					dispatch(setUser(data.user));
 					// setUser(data.user);
-					console.log('Logged In as: ', data.user.userName);
+					console.log('Logged In. favorites : ', data.user.favoriteMovies);
 
-					fetchFavoriteMovies(data.user.favorites); // Fetch favorite movies
-
-					// console.log('Logged In as user: ', user);
-
-					// onLoggedIn(data.user, data.token);
+					// if (data.user.favoriteMovies) {
+					// console.log('in Login, favorites : ', data.user.favoriteMovies);
+					// fetchFavoriteMovies(data.user.favoriteMovies);
 				}
+				// console.log('Logged In as user: ', user);
+
+				// onLoggedIn(data.user, data.token);
+				// }
 			})
 			.catch((e) => {
 				alert('something went wrong in Login');
 			});
+	};
+
+	const fetchFavoriteMovies = (favorites) => {
+		const token = localStorage.getItem('token');
+		const favoriteMovies = [];
+
+		favorites.forEach((favoriteId) => {
+			fetch(`https://theflix-api.herokuapp.com/movies/id/${favoriteId}`, {
+				headers: { Authorization: `Bearer ${token}` },
+			})
+				.then((response) => response.json())
+				.then((movie) => {
+					favoriteMovies.push(movie);
+					// If all favorite movies are fetched, store them in local storage
+					if (favoriteMovies.length === favorites.length) {
+						console.log('Fetched all favovite movies : ', favoriteMovies);
+						localStorage.setItem('favoriteMovies', JSON.stringify(favoriteMovies));
+					}
+				})
+				.catch((error) => {
+					console.error(`Error fetching favorite movie with ID ${favoriteId}:`, error);
+				});
+		});
 	};
 
 	return (

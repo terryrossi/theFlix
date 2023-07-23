@@ -4,7 +4,7 @@ import { Form, Button } from 'react-bootstrap';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { setUser } from '../../redux/reducers/user';
-import { MoviesList } from '../movies-list/movies-list';
+// import { MoviesList } from '../movies-list/movies-list';
 
 export const ProfileView = () => {
 	const { userName } = useParams();

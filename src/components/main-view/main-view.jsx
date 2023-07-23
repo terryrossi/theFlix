@@ -10,22 +10,35 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { setMovies } from '../../redux/reducers/movies';
+// import { setFavoriteMovies } from '../../redux/reducers/favoriteMovies';
 import { MoviesList } from '../movies-list/movies-list';
 
 export const MainView = () => {
 	const movies = useSelector((state) => state.movies.list);
+	// const favoriteMovies = useSelector((state) => state.favoriteMovies.list);
 
 	const selectedMovie = useSelector((state) => state.selectedMovie);
 
 	const [similarMovies, setSimilarMovies] = useState([]);
 
+	const [favoriteMovies, setFavoriteMovies] = useState([]);
+
 	let token = localStorage.getItem('token');
 	let storedUser = JSON.parse(localStorage.getItem('user'));
+	// let favoriteMovies = JSON.parse(localStorage.getItem('favoriteMovies'));
 
 	const stateUser = useSelector((state) => state.user);
+	console.log('stateUser = ', stateUser);
 	const user = stateUser ? stateUser : storedUser;
 
 	const dispatch = useDispatch();
+
+	console.log('user : ', user);
+	console.log('token : ', token);
+	console.log('movies : ', movies);
+	console.log('selectedMovie : ', selectedMovie);
+	console.log('similarMovies : ', similarMovies);
+	console.log('favoriteMovies : ', favoriteMovies);
 
 	// Constructors
 
@@ -52,8 +65,9 @@ export const MainView = () => {
 					};
 				});
 				dispatch(setMovies(moviesFromApi));
+				console.log('Fetched Movies : ', movies);
 			});
-	}, []);
+	}, [token]);
 
 	useEffect(() => {
 		if (selectedMovie && token) {
@@ -63,6 +77,17 @@ export const MainView = () => {
 			setSimilarMovies(similarMovies);
 		}
 	}, [selectedMovie, movies, token]);
+
+	useEffect(() => {
+		if (user?.favoriteMovies?.length && token) {
+			const userFavoriteMovies = movies.filter((movie) => user.favoriteMovies.includes(movie.id));
+			// dispatch(setFavoriteMovies(userFavoriteMovies));
+
+			setFavoriteMovies(userFavoriteMovies);
+		}
+	}, [movies, token]);
+
+	console.log('Favorite Movies: ', favoriteMovies);
 
 	return (
 		<BrowserRouter>
@@ -125,7 +150,7 @@ export const MainView = () => {
 							<>
 								{!token ? (
 									<Navigate
-										to='/login'
+										to='/'
 										replace
 									/>
 								) : movies.length === 0 ? (
@@ -175,7 +200,12 @@ export const MainView = () => {
 						path='/users/:userName'
 						element={
 							<>
-								{token ? (
+								{!token ? (
+									<Navigate
+										to='/'
+										replace
+									/>
+								) : (
 									<>
 										<Row style={{ marginTop: '100px' }}>
 											<Col></Col>
@@ -192,9 +222,23 @@ export const MainView = () => {
 											</Col>
 											<Col></Col>
 										</Row>
+										<Row style={{ marginTop: '30px' }}>
+											<hr />
+
+											<h2>Favorite Movies : </h2>
+										</Row>
+										<Row>
+											{favoriteMovies.map((movie) => (
+												<Col
+													key={movie.id}
+													lg={3}
+													md={4}
+													xs={6}>
+													<MovieCard movie={movie} />
+												</Col>
+											))}
+										</Row>
 									</>
-								) : (
-									<Col>Please Login...</Col>
 								)}
 							</>
 						}
