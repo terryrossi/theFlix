@@ -10,18 +10,18 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { setMovies } from '../../redux/reducers/movies';
-// import { setFavoriteMovies } from '../../redux/reducers/favoriteMovies';
+import { setFavoriteMovies } from '../../redux/reducers/favoriteMovies';
 import { MoviesList } from '../movies-list/movies-list';
 
 export const MainView = () => {
 	const movies = useSelector((state) => state.movies.list);
-	// const favoriteMovies = useSelector((state) => state.favoriteMovies.list);
 
 	const selectedMovie = useSelector((state) => state.selectedMovie);
 
 	const [similarMovies, setSimilarMovies] = useState([]);
 
-	const [favoriteMovies, setFavoriteMovies] = useState([]);
+	const favoriteMovies = useSelector((state) => state.favoriteMovies.list);
+	// const [favoriteMovies, setFavoriteMovies] = useState([]);
 
 	let token = localStorage.getItem('token');
 	let storedUser = JSON.parse(localStorage.getItem('user'));
@@ -81,9 +81,9 @@ export const MainView = () => {
 	useEffect(() => {
 		if (user?.favoriteMovies?.length && token) {
 			const userFavoriteMovies = movies.filter((movie) => user.favoriteMovies.includes(movie.id));
-			// dispatch(setFavoriteMovies(userFavoriteMovies));
 
-			setFavoriteMovies(userFavoriteMovies);
+			dispatch(setFavoriteMovies(userFavoriteMovies));
+			// setFavoriteMovies(userFavoriteMovies);
 		}
 	}, [movies, token]);
 
@@ -222,22 +222,25 @@ export const MainView = () => {
 											</Col>
 											<Col></Col>
 										</Row>
-										<Row style={{ marginTop: '30px' }}>
-											<hr />
+										{favoriteMovies.length > 0 ? (
+											<Row style={{ marginTop: '30px' }}>
+												<hr />
 
-											<h2>Favorite Movies : </h2>
-										</Row>
-										<Row>
-											{favoriteMovies.map((movie) => (
-												<Col
-													key={movie.id}
-													lg={3}
-													md={4}
-													xs={6}>
-													<MovieCard movie={movie} />
-												</Col>
-											))}
-										</Row>
+												<h2>Favorite Movies : </h2>
+
+												{favoriteMovies.map((movie) => (
+													<Col
+														key={movie.id}
+														lg={3}
+														md={4}
+														xs={6}>
+														<MovieCard movie={movie} />
+													</Col>
+												))}
+											</Row>
+										) : (
+											''
+										)}
 									</>
 								)}
 							</>

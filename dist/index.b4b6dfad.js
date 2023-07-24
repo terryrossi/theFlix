@@ -27335,16 +27335,16 @@ var _navigationBar = require("../navigation-bar/navigation-bar");
 var _reactRouterDom = require("react-router-dom");
 var _reactRedux = require("react-redux");
 var _movies = require("../../redux/reducers/movies");
-// import { setFavoriteMovies } from '../../redux/reducers/favoriteMovies';
+var _favoriteMovies = require("../../redux/reducers/favoriteMovies");
 var _moviesList = require("../movies-list/movies-list");
 var _s = $RefreshSig$();
 const MainView = ()=>{
     _s();
     const movies = (0, _reactRedux.useSelector)((state)=>state.movies.list);
-    // const favoriteMovies = useSelector((state) => state.favoriteMovies.list);
     const selectedMovie = (0, _reactRedux.useSelector)((state)=>state.selectedMovie);
     const [similarMovies, setSimilarMovies] = (0, _react.useState)([]);
-    const [favoriteMovies, setFavoriteMovies] = (0, _react.useState)([]);
+    const favoriteMovies = (0, _reactRedux.useSelector)((state)=>state.favoriteMovies.list);
+    // const [favoriteMovies, setFavoriteMovies] = useState([]);
     let token = localStorage.getItem("token");
     let storedUser = JSON.parse(localStorage.getItem("user"));
     // let favoriteMovies = JSON.parse(localStorage.getItem('favoriteMovies'));
@@ -27399,8 +27399,8 @@ const MainView = ()=>{
     (0, _react.useEffect)(()=>{
         if (user?.favoriteMovies?.length && token) {
             const userFavoriteMovies = movies.filter((movie)=>user.favoriteMovies.includes(movie.id));
-            // dispatch(setFavoriteMovies(userFavoriteMovies));
-            setFavoriteMovies(userFavoriteMovies);
+            dispatch((0, _favoriteMovies.setFavoriteMovies)(userFavoriteMovies));
+        // setFavoriteMovies(userFavoriteMovies);
         }
     }, [
         movies,
@@ -27577,7 +27577,7 @@ const MainView = ()=>{
                                                 /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Col), {}, void 0, false, void 0, void 0)
                                             ]
                                         }, void 0, true, void 0, void 0),
-                                        /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Row), {
+                                        favoriteMovies.length > 0 ? /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Row), {
                                             style: {
                                                 marginTop: "30px"
                                             },
@@ -27585,19 +27585,17 @@ const MainView = ()=>{
                                                 /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("hr", {}, void 0, false, void 0, void 0),
                                                 /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h2", {
                                                     children: "Favorite Movies : "
-                                                }, void 0, false, void 0, void 0)
+                                                }, void 0, false, void 0, void 0),
+                                                favoriteMovies.map((movie)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Col), {
+                                                        lg: 3,
+                                                        md: 4,
+                                                        xs: 6,
+                                                        children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _movieCard.MovieCard), {
+                                                            movie: movie
+                                                        }, void 0, false, void 0, void 0)
+                                                    }, movie.id, false, void 0, void 0))
                                             ]
-                                        }, void 0, true, void 0, void 0),
-                                        /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Row), {
-                                            children: favoriteMovies.map((movie)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Col), {
-                                                    lg: 3,
-                                                    md: 4,
-                                                    xs: 6,
-                                                    children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _movieCard.MovieCard), {
-                                                        movie: movie
-                                                    }, void 0, false, void 0, void 0)
-                                                }, movie.id, false, void 0, void 0))
-                                        }, void 0, false, void 0, void 0)
+                                        }, void 0, true, void 0, void 0) : ""
                                     ]
                                 }, void 0, true)
                             }, void 0, false)
@@ -27624,8 +27622,9 @@ const MainView = ()=>{
         columnNumber: 3
     }, undefined);
 };
-_s(MainView, "lvL6IgiDxXMZzIh1g6sU4C3DrOI=", false, function() {
+_s(MainView, "n/GzHP3HpwHnpW9mcY637aRfc6w=", false, function() {
     return [
+        (0, _reactRedux.useSelector),
         (0, _reactRedux.useSelector),
         (0, _reactRedux.useSelector),
         (0, _reactRedux.useSelector),
@@ -27641,7 +27640,7 @@ $RefreshReg$(_c, "MainView");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","../movie-card/movie-card":"bwuIu","../movie-view/movie-view":"ggaUx","../login-view/login-view":"9YtA0","../signup-view/signup-view":"4OGiN","react-bootstrap":"3AD9A","../navigation-bar/navigation-bar":"bsPVM","react-router-dom":"9xmpe","../profile-view/profile-view":"2vVqf","react-redux":"bdVon","../../redux/reducers/movies":"l0qwl","../movies-list/movies-list":"bPxKK"}],"gkKU3":[function(require,module,exports) {
+},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","../movie-card/movie-card":"bwuIu","../movie-view/movie-view":"ggaUx","../login-view/login-view":"9YtA0","../signup-view/signup-view":"4OGiN","react-bootstrap":"3AD9A","../navigation-bar/navigation-bar":"bsPVM","react-router-dom":"9xmpe","../profile-view/profile-view":"2vVqf","react-redux":"bdVon","../../redux/reducers/movies":"l0qwl","../movies-list/movies-list":"bPxKK","../../redux/reducers/favoriteMovies":"hbM2o"}],"gkKU3":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -53149,6 +53148,7 @@ var _reactRedux = require("react-redux");
 var _movies = require("../../redux/reducers/movies");
 var _user = require("../../redux/reducers/user");
 var _selectedMovie = require("../../redux/reducers/selectedMovie");
+var _favoriteMovies = require("../../redux/reducers/favoriteMovies");
 var _s = $RefreshSig$();
 const NavigationBar = ()=>{
     _s();
@@ -53163,6 +53163,7 @@ const NavigationBar = ()=>{
         dispatch((0, _user.setUser)(null));
         dispatch((0, _selectedMovie.setSelectedMovie)(null));
         dispatch((0, _movies.setMovies)([]));
+        dispatch((0, _favoriteMovies.setFavoriteMovies)([]));
         token = null;
         localStorage.clear();
         console.log("Logged out!!!");
@@ -53191,7 +53192,7 @@ const NavigationBar = ()=>{
                     children: "TheFLIX"
                 }, void 0, false, {
                     fileName: "src/components/navigation-bar/navigation-bar.jsx",
-                    lineNumber: 47,
+                    lineNumber: 49,
                     columnNumber: 5
                 }, undefined),
                 /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Navbar).Toggle, {
@@ -53202,7 +53203,7 @@ const NavigationBar = ()=>{
                     }
                 }, void 0, false, {
                     fileName: "src/components/navigation-bar/navigation-bar.jsx",
-                    lineNumber: 58,
+                    lineNumber: 60,
                     columnNumber: 5
                 }, undefined),
                 /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Navbar).Collapse, {
@@ -53217,7 +53218,7 @@ const NavigationBar = ()=>{
                                 children: "Home"
                             }, void 0, false, {
                                 fileName: "src/components/navigation-bar/navigation-bar.jsx",
-                                lineNumber: 65,
+                                lineNumber: 67,
                                 columnNumber: 7
                             }, undefined),
                             !token && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Nav).Link, {
@@ -53227,7 +53228,7 @@ const NavigationBar = ()=>{
                                 children: "Log In"
                             }, void 0, false, {
                                 fileName: "src/components/navigation-bar/navigation-bar.jsx",
-                                lineNumber: 72,
+                                lineNumber: 74,
                                 columnNumber: 8
                             }, undefined),
                             !token && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Nav).Link, {
@@ -53237,7 +53238,7 @@ const NavigationBar = ()=>{
                                 children: "Sign Up"
                             }, void 0, false, {
                                 fileName: "src/components/navigation-bar/navigation-bar.jsx",
-                                lineNumber: 80,
+                                lineNumber: 82,
                                 columnNumber: 8
                             }, undefined),
                             token && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Nav).Link, {
@@ -53247,7 +53248,7 @@ const NavigationBar = ()=>{
                                 children: "Profile"
                             }, void 0, false, {
                                 fileName: "src/components/navigation-bar/navigation-bar.jsx",
-                                lineNumber: 88,
+                                lineNumber: 90,
                                 columnNumber: 8
                             }, undefined),
                             token && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Nav).Link, {
@@ -53255,29 +53256,29 @@ const NavigationBar = ()=>{
                                 children: "Logout"
                             }, void 0, false, {
                                 fileName: "src/components/navigation-bar/navigation-bar.jsx",
-                                lineNumber: 96,
+                                lineNumber: 98,
                                 columnNumber: 17
                             }, undefined)
                         ]
                     }, void 0, true, {
                         fileName: "src/components/navigation-bar/navigation-bar.jsx",
-                        lineNumber: 64,
+                        lineNumber: 66,
                         columnNumber: 6
                     }, undefined)
                 }, void 0, false, {
                     fileName: "src/components/navigation-bar/navigation-bar.jsx",
-                    lineNumber: 63,
+                    lineNumber: 65,
                     columnNumber: 5
                 }, undefined)
             ]
         }, void 0, true, {
             fileName: "src/components/navigation-bar/navigation-bar.jsx",
-            lineNumber: 40,
+            lineNumber: 42,
             columnNumber: 4
         }, undefined)
     }, void 0, false, {
         fileName: "src/components/navigation-bar/navigation-bar.jsx",
-        lineNumber: 39,
+        lineNumber: 41,
         columnNumber: 3
     }, undefined);
 };
@@ -53295,7 +53296,31 @@ $RefreshReg$(_c, "NavigationBar");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","react-bootstrap":"3AD9A","react-router-dom":"9xmpe","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","react-redux":"bdVon","../../redux/reducers/user":"e6tdF","../../redux/reducers/movies":"l0qwl","../../redux/reducers/selectedMovie":"3qq7V"}],"2vVqf":[function(require,module,exports) {
+},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","react-bootstrap":"3AD9A","react-router-dom":"9xmpe","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","react-redux":"bdVon","../../redux/reducers/user":"e6tdF","../../redux/reducers/movies":"l0qwl","../../redux/reducers/selectedMovie":"3qq7V","../../redux/reducers/favoriteMovies":"hbM2o"}],"hbM2o":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "setFavoriteMovies", ()=>setFavoriteMovies);
+parcelHelpers.export(exports, "setFavoriteMoviesFilter", ()=>setFavoriteMoviesFilter);
+var _toolkit = require("@reduxjs/toolkit");
+const favoriteMoviesSlice = (0, _toolkit.createSlice)({
+    name: "favoriteMovies",
+    initialState: {
+        list: [],
+        filter: ""
+    },
+    reducers: {
+        setFavoriteMovies: (state, action)=>{
+            state.list = action.payload;
+        },
+        setFavoriteMoviesFilter: (state, action)=>{
+            state.filter = action.payload;
+        }
+    }
+});
+const { setFavoriteMovies , setFavoriteMoviesFilter  } = favoriteMoviesSlice.actions;
+exports.default = favoriteMoviesSlice.reducer;
+
+},{"@reduxjs/toolkit":"lL1Ef","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"2vVqf":[function(require,module,exports) {
 var $parcel$ReactRefreshHelpers$3c12 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
 var prevRefreshReg = window.$RefreshReg$;
 var prevRefreshSig = window.$RefreshSig$;
@@ -53654,30 +53679,6 @@ const store = (0, _toolkit.configureStore)({
     }
 });
 
-},{"@reduxjs/toolkit":"lL1Ef","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./reducers/movies":"l0qwl","./reducers/user":"e6tdF","./reducers/selectedMovie":"3qq7V","./reducers/favoriteMovies":"hbM2o"}],"hbM2o":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "setFavoriteMovies", ()=>setFavoriteMovies);
-parcelHelpers.export(exports, "setFavoriteMoviesFilter", ()=>setFavoriteMoviesFilter);
-var _toolkit = require("@reduxjs/toolkit");
-const favoriteMoviesSlice = (0, _toolkit.createSlice)({
-    name: "favoriteMovies",
-    initialState: {
-        list: [],
-        filter: ""
-    },
-    reducers: {
-        setFavoriteMovies: (state, action)=>{
-            state.list = action.payload;
-        },
-        setFavoriteMoviesFilter: (state, action)=>{
-            state.filter = action.payload;
-        }
-    }
-});
-const { setFavoriteMovies , setFavoriteMoviesFilter  } = favoriteMoviesSlice.actions;
-exports.default = favoriteMoviesSlice.reducer;
-
-},{"@reduxjs/toolkit":"lL1Ef","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["4s3Ar","1xC6H","d8Dch"], "d8Dch", "parcelRequired704")
+},{"@reduxjs/toolkit":"lL1Ef","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./reducers/movies":"l0qwl","./reducers/user":"e6tdF","./reducers/selectedMovie":"3qq7V","./reducers/favoriteMovies":"hbM2o"}]},["4s3Ar","1xC6H","d8Dch"], "d8Dch", "parcelRequired704")
 
 //# sourceMappingURL=index.b4b6dfad.js.map

@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setMovies } from '../../redux/reducers/movies';
 import { setUser } from '../../redux/reducers/user';
 import { setSelectedMovie } from '../../redux/reducers/selectedMovie';
+import { setFavoriteMovies } from '../../redux/reducers/favoriteMovies';
 
 export const NavigationBar = () => {
 	const [expanded, setExpanded] = useState(false);
@@ -25,6 +26,7 @@ export const NavigationBar = () => {
 		dispatch(setUser(null));
 		dispatch(setSelectedMovie(null));
 		dispatch(setMovies([]));
+		dispatch(setFavoriteMovies([]));
 		token = null;
 		localStorage.clear();
 		console.log('Logged out!!!');
