@@ -1,27 +1,30 @@
 import React from 'react';
 import { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../redux/reducers/user';
 
-export const LoginView = ({ onLoggedIn }) => {
-	// export const LoginView = () => {
+export const LoginView = () => {
+	const dispatch = useDispatch();
+
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
-	// const [user, setUser] = useState(null);
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
 
 		fetch(`https://theflix-api.herokuapp.com/login?userName=${username}&password=${password}`, {
+			// fetch(`localhost:8080/login?userName=${username}&password=${password}`, {
 			method: 'POST',
 		})
 			.then((response) => response.json())
 			.then((data) => {
-				if (data.user) {
+				if (data.token) {
 					localStorage.setItem('user', JSON.stringify(data.user));
 					localStorage.setItem('token', data.token);
+					dispatch(setUser(data.user));
 					// setUser(data.user);
-					console.log('User Logged In : ', data.user, data.token);
-					onLoggedIn(data.user, data.token);
+					console.log('Logged In as : ', data.user);
 				}
 			})
 			.catch((e) => {

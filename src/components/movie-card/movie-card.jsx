@@ -1,43 +1,52 @@
+import React, { useState } from 'react';
 // Import the PropTypes library
 import PropTypes from 'prop-types';
 
 import { Button, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { setMovies } from '../../redux/reducers/movies';
+import { setUser } from '../../redux/reducers/user';
+import { setSelectedMovie } from '../../redux/reducers/selectedMovie';
 
 // export const MovieCard = (props) => {
-//   return <div>{props.movie.title}</div>;
+//   return <div>{props.movie.title}</div>
 // };
 // or...
-export const MovieCard = ({ movie, onMovieClick }) => {
+export const MovieCard = ({ movie }) => {
+	const dispatch = useDispatch();
+
+	let selectedMovie = useSelector((state) => state.selectedMovie);
+
 	return (
 		<Link
-			onClick={() => onMovieClick(movie)}
+			onClick={() => dispatch(setSelectedMovie(movie))}
 			to={`/movies/${encodeURIComponent(movie.id)}`}
 			style={{ textDecoration: 'none' }}>
-			<Card style={{ marginTop: '10px', boxShadow: '1px 1px 10px 0px rgb(41, 39, 39)' }}>
+			<Card
+				style={{
+					marginTop: '10px',
+					boxShadow: '1px 1px 10px 0px rgb(41, 39, 39)',
+				}}>
 				<Card.Img
 					variant='top'
 					src={movie.image}
 					alt={'Poster of the movie'}
 					style={{
-						// width: '100%',
+						width: '100%',
 						// height: '100%',
-						height: '350px',
 						objectFit: 'cover',
 						// borderRadius: '9px',
 						// padding: '15px',
 						// boxShadow: '1px 1px 10px 0px rgb(41, 39, 39)',
 					}}
 				/>
-				<Card.Body>
+				<Card.Body className='d-flex flex-column align-items-center'>
 					<Card.Title
 						className='text-center'
 						style={{ color: 'black' }}>
 						{movie.title}
 					</Card.Title>
-					{/* <Link to={`/movies/${encodeURIComponent(movie.id)}`}>
-						<Button variant='link'>Open</Button>
-					</Link> */}
 				</Card.Body>
 			</Card>
 		</Link>

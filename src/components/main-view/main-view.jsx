@@ -8,44 +8,55 @@ import { Row, Col } from 'react-bootstrap';
 import { NavigationBar } from '../navigation-bar/navigation-bar';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { setMovies } from '../../redux/reducers/movies';
+import { setFavoriteMovies } from '../../redux/reducers/favoriteMovies';
+import { MoviesList } from '../movies-list/movies-list';
+
+// localStorage.setItem('user', JSON.stringify({}));
+
 export const MainView = () => {
-	const [movies, setMovies] = useState([]);
-	const [selectedMovie, setSelectedMovie] = useState(null);
+	const movies = useSelector((state) => state.movies.list);
+
+	const selectedMovie = useSelector((state) => state.selectedMovie);
+
 	const [similarMovies, setSimilarMovies] = useState([]);
 
-	const [user, setUser] = useState(null);
-	const [token, setToken] = useState(null);
+	const favoriteMovies = useSelector((state) => state.favoriteMovies.list);
+
+	let token = localStorage.getItem('token') ? localStorage.getItem('token') : '';
+
+	let storedUser = JSON.parse(localStorage.getItem('user'));
+	// console.log('STORED USER : ', storedUser);
+	const stateUser = useSelector((state) => state.user);
+	// console.log('STATE USER : ', stateUser);
+
+	const user = stateUser ? stateUser : storedUser;
+
+	const dispatch = useDispatch();
+
+	// console.log('user : ', user);
+	// console.log('token : ', token);
+	// console.log('movies : ', movies);
+	// console.log('selectedMovie : ', selectedMovie);
+	// console.log('similarMovies : ', similarMovies);
+	// console.log('favoriteMovies : ', favoriteMovies);
 
 	// Constructors
 
-	// Check Logged In?
-	useEffect(() => {
-		// Check if there is a logged-in user in localStorage
-		const storedUser = localStorage.getItem('user') ? localStorage.getItem('user') : null;
-		// console.log('storedUser : ', storedUser);
-		if (storedUser) {
-			const parsedUser = storedUser ? JSON.parse(storedUser) : null;
-			setUser(parsedUser);
-		}
-		const storedToken = localStorage.getItem('token');
-		if (storedToken) {
-			setToken(storedToken);
-		}
-		// console.log('in MainView (user, token): ', user, token);
-	}, [token]);
-
 	// If Logged In... Fetch Movies
 	useEffect(() => {
-		if (!token) {
+		if (!token || !user) {
 			return;
 		}
 		// else...
 		fetch('https://theflix-api.herokuapp.com/movies', {
+			// fetch('localhost:8080/movies', {
 			headers: { Authorization: `Bearer ${token}` },
 		})
 			.then((response) => response.json())
 			.then((data) => {
-				const movies = data.map((movie) => {
+				const moviesFromApi = data.map((movie) => {
 					return {
 						id: movie._id,
 						title: movie.title,
@@ -56,7 +67,7 @@ export const MainView = () => {
 						// actors: movie.actors?.[0],
 					};
 				});
-				setMovies(movies);
+				dispatch(setMovies(moviesFromApi));
 			});
 	}, [token]);
 
@@ -69,21 +80,18 @@ export const MainView = () => {
 		}
 	}, [selectedMovie, movies, token]);
 
-	// Logout function
-	const handleLogout = () => {
-		setUser(null);
-		setToken(null);
-		setSelectedMovie(null);
-		localStorage.clear();
-		// console.log('LOGGED OUT : ', user, token);
-	};
+	useEffect(() => {
+		if (!user || !movies) {
+			return;
+		}
+		const userFavoriteMovies = movies.filter((movie) => user?.favoriteMovies?.includes(movie.id));
+		dispatch(setFavoriteMovies(userFavoriteMovies));
+		// }, [movies, token, user]);
+	}, [user, movies]);
 
 	return (
 		<BrowserRouter>
-			<NavigationBar
-				// user={user}
-				onLogout={handleLogout}
-			/>
+			<NavigationBar />
 			<Row className='justify-content-md-center'>
 				<Routes>
 					<Route
@@ -93,23 +101,17 @@ export const MainView = () => {
 								{token ? (
 									<Navigate to='/' />
 								) : (
-									<Row style={{ marginTop: '80px' }}>
+									<Row style={{ marginTop: '100px' }}>
 										<Col></Col>
 										<Col
 											md={6}
 											style={{
-												// border: '1px solid black',
 												boxShadow: '1px 1px 10px 0px rgb(41, 39, 39)',
 												borderRadius: '9px',
 												padding: '15px',
 											}}>
 											<h4>New User. Please Signup...</h4>
-											<SignupView
-												onSignup={(user, token) => {
-													setUser(user);
-													setToken(token);
-												}}
-											/>
+											<SignupView />
 										</Col>
 										<Col></Col>
 									</Row>
@@ -124,7 +126,7 @@ export const MainView = () => {
 								{token ? (
 									<Navigate to='/' />
 								) : (
-									<Row style={{ marginTop: '80px' }}>
+									<Row style={{ marginTop: '100px' }}>
 										<Col></Col>
 										<Col
 											md={6}
@@ -134,12 +136,7 @@ export const MainView = () => {
 												padding: '15px',
 											}}>
 											<h4>Existing User. Please Login...</h4>
-											<LoginView
-												onLoggedIn={(user, token) => {
-													setUser(user);
-													setToken(token);
-												}}
-											/>
+											<LoginView />
 										</Col>
 										<Col></Col>
 									</Row>
@@ -153,15 +150,15 @@ export const MainView = () => {
 							<>
 								{!token ? (
 									<Navigate
-										to='/login'
+										to='/'
 										replace
 									/>
 								) : movies.length === 0 ? (
 									<Col>The list is empty!</Col>
 								) : (
 									<>
-										<Row style={{ marginTop: '80px' }}>
-											<MovieView movies={movies} />
+										<Row style={{ marginTop: '100px' }}>
+											<MovieView />
 											<hr />
 
 											<h2>Similar Movies : </h2>
@@ -169,16 +166,11 @@ export const MainView = () => {
 										<Row>
 											{similarMovies.map((movie) => (
 												<Col
-													// style={{ border: '1px solid black' }}
 													key={movie.id}
-													md={3}
-													sm={6}>
-													<MovieCard
-														movie={movie}
-														onMovieClick={(newSelectedMovie) => {
-															setSelectedMovie(newSelectedMovie);
-														}}
-													/>
+													lg={3}
+													md={4}
+													xs={6}>
+													<MovieCard movie={movie} />
 												</Col>
 											))}
 										</Row>
@@ -193,23 +185,8 @@ export const MainView = () => {
 							<>
 								{token ? (
 									<>
-										<Row style={{ marginTop: '80px' }}>
-											{movies.map((movie) => (
-												<Col
-													// style={{ border: '1px solid black' }}
-													key={movie.id}
-													md={3}
-													sm={6}
-													xs={12}>
-													<MovieCard
-														// key={movie.id}
-														movie={movie}
-														onMovieClick={(newSelectedMovie) => {
-															setSelectedMovie(newSelectedMovie);
-														}}
-													/>
-												</Col>
-											))}
+										<Row style={{ marginTop: '90px' }}>
+											<MoviesList />
 										</Row>
 									</>
 								) : (
@@ -223,9 +200,14 @@ export const MainView = () => {
 						path='/users/:userName'
 						element={
 							<>
-								{token ? (
+								{!token ? (
+									<Navigate
+										to='/'
+										replace
+									/>
+								) : (
 									<>
-										<Row style={{ marginTop: '80px' }}>
+										<Row style={{ marginTop: '100px' }}>
 											<Col></Col>
 											<Col
 												md={6}
@@ -236,13 +218,30 @@ export const MainView = () => {
 													padding: '15px',
 												}}>
 												<h4>User Profile</h4>
-												<ProfileView user={user} />
+												<ProfileView />
 											</Col>
 											<Col></Col>
 										</Row>
+										{favoriteMovies.length > 0 ? (
+											<Row style={{ marginTop: '30px' }}>
+												<hr />
+
+												<h2>Favorite Movies : </h2>
+
+												{favoriteMovies.map((movie) => (
+													<Col
+														key={movie.id}
+														lg={3}
+														md={4}
+														xs={6}>
+														<MovieCard movie={movie} />
+													</Col>
+												))}
+											</Row>
+										) : (
+											''
+										)}
 									</>
-								) : (
-									<Col>Please Login...</Col>
 								)}
 							</>
 						}

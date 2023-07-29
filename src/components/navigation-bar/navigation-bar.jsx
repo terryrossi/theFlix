@@ -3,21 +3,33 @@ import { useState, useEffect } from 'react';
 import { Navbar, Nav, Row, Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-export const NavigationBar = ({ onLogout }) => {
+import { useSelector, useDispatch } from 'react-redux';
+
+import { setMovies } from '../../redux/reducers/movies';
+import { setUser } from '../../redux/reducers/user';
+import { setSelectedMovie } from '../../redux/reducers/selectedMovie';
+import { setFavoriteMovies } from '../../redux/reducers/favoriteMovies';
+
+export const NavigationBar = () => {
 	const [expanded, setExpanded] = useState(false);
 
-	// Check if Logged In
-	const userToParse = localStorage.getItem('user') ? localStorage.getItem('user') : null;
+	let user = JSON.parse(localStorage.getItem('user'));
+	let token = localStorage.getItem('token');
 
-	const user = JSON.parse(userToParse);
-	const token = localStorage.getItem('token');
+	const userName = user ? user.userName : '';
 
-	// console.log('in NavBar user, token: ', user, token);
+	let dispatch = useDispatch();
 
 	// Logout
 	const handleLogout = () => {
 		toggleNavbar();
-		onLogout();
+		dispatch(setUser(null));
+		dispatch(setSelectedMovie(null));
+		dispatch(setMovies([]));
+		dispatch(setFavoriteMovies([]));
+		token = null;
+		localStorage.clear();
+		console.log('Logged out!!!');
 	};
 
 	// Toggle NavBar
@@ -36,12 +48,19 @@ export const NavigationBar = ({ onLogout }) => {
 				{/* <Container> */}
 				<Navbar.Brand
 					href='#'
-					style={{ color: 'red', padding: '0.5rem' }}>
+					style={{
+						color: 'red',
+						padding: '0.5rem',
+						fontFamily: 'Beaufort for NF',
+						fontSize: '2rem',
+						fontWeight: 'bold',
+					}}>
 					TheFLIX
 				</Navbar.Brand>
 				<Navbar.Toggle
 					aria-controls='navbar-nav'
 					onClick={toggleNavbar}
+					style={{ borderColor: 'red' }}
 				/>
 				<Navbar.Collapse id='navbar-nav'>
 					<Nav className='ml-auto'>
@@ -70,7 +89,7 @@ export const NavigationBar = ({ onLogout }) => {
 						{token && (
 							<Nav.Link
 								as={Link}
-								to={`/users/${encodeURIComponent(user.userName)}`}
+								to={`/users/${encodeURIComponent(userName)}`}
 								onClick={toggleNavbar}>
 								Profile
 							</Nav.Link>

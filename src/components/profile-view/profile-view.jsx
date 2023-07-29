@@ -2,82 +2,102 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
 
-export const ProfileView = ({ user }) => {
+import { useSelector, useDispatch } from 'react-redux';
+import { setUser } from '../../redux/reducers/user';
+import { setFavoriteMovies } from '../../redux/reducers/favoriteMovies';
+// import { MoviesList } from '../movies-list/movies-list';
+
+export const ProfileView = () => {
 	const { userName } = useParams();
-	const [email, setEmail] = useState('');
+
+	let user = JSON.parse(localStorage.getItem('user'));
+
+	const token = localStorage.getItem('token');
+
+	const movies = useSelector((state) => state.movies.list);
+	// const favoriteMovies = useSelector((state) => state.favoriteMovies.list);
+
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
+	const [email, setEmail] = useState('');
 
-	const storedUser = JSON.parse(localStorage.getItem('user'));
-	const storedToken = localStorage.getItem('token');
-	const token = storedToken ? storedToken : '';
+	const [formHasChanged, setFormHasChanged] = useState(false);
+
+	const dispatch = useDispatch();
+
 	useEffect(() => {
 		if (!token) {
 			return;
 		}
-		setFirstName(storedUser.firstName);
-		setLastName(storedUser.lastName);
-		setEmail(storedUser.email);
+		if (user) {
+			setFirstName(user.firstName);
+			setLastName(user.lastName);
+			setEmail(user.email);
+		}
 	}, []);
 
 	const handleFirstNameChange = (event) => {
 		setFirstName(event.target.value);
+		setFormHasChanged(true);
 	};
 	const handleLastNameChange = (event) => {
 		setLastName(event.target.value);
+		setFormHasChanged(true);
 	};
 	const handleEmailChange = (event) => {
 		setEmail(event.target.value);
+		setFormHasChanged(true);
 	};
 
 	const handleUpdateUser = () => {
-		const updatedUser = storedUser;
+		if (formHasChanged) {
+			const updatedUser = {
+				...user,
+				firstName: firstName,
+				lastName: lastName,
+				email: email,
+			};
 
-		updatedUser.firstName = firstName;
-		updatedUser.lastName = lastName;
-		updatedUser.userName = userName;
-		updatedUser.email = email;
-
-		// Update user data via API
-		fetch(`https://theflix-api.herokuapp.com/users/`, {
-			method: 'PATCH',
-			headers: {
-				'content-type': 'application/json',
-				Authorization: `Bearer ${token}`,
-			},
-			body: JSON.stringify(updatedUser),
-		})
-			.then((response) => {
-				// something went wrong?
-				if (!response.ok) {
-					// Inspect the response
-					response
-						.json()
-						// destructuring the response
-						.then(({ errors }) => {
-							// errors is an array
-							errors.forEach((err) => {
-								// Print one alert for each error founded
-								alert(
-									`STATUS CODE: ${response.status}\nMESSAGE: ${err.msg}\nFIELD: ${err.path}\nVALUE: ${err.value}`
-								);
-							});
-						});
-				} else {
-					// account has been modified successfully
-					// and the local storage needs to be in sync
-					alert('Your Account has been Modified');
-					localStorage.setItem('user', JSON.stringify(updatedUser));
-					// localStorage.setItem('user', updatedUser);
-				}
+			// Update user data via API
+			fetch(`https://theflix-api.herokuapp.com/users/`, {
+				// fetch(`localhost:8080/users/`, {
+				method: 'PATCH',
+				headers: {
+					'content-type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+				body: JSON.stringify(updatedUser),
 			})
-			.catch((e) => {
-				console.log('error occurred during modification of user: ', e);
-			});
+				.then((response) => {
+					// something went wrong?
+					if (!response.ok) {
+						// Inspect the response
+						response
+							.json()
+							// destructuring the response
+							.then(({ errors }) => {
+								// errors is an array
+								errors.forEach((err) => {
+									// Print one alert for each error founded
+									alert(
+										`STATUS CODE: ${response.status}\nMESSAGE: ${err.msg}\nFIELD: ${err.path}\nVALUE: ${err.value}`
+									);
+								});
+							});
+					} else {
+						// account has been modified successfully
+						// and the local storage needs to be in sync
+						alert('Your Account has been Updated');
+						localStorage.setItem('user', JSON.stringify(updatedUser));
+						dispatch(setUser(updatedUser));
+					}
+				})
+				.catch((e) => {
+					console.log('error occurred during modification of user: ', e);
+				});
+		}
 	};
-
 	return (
-		// <Form onSubmit={handleUpdateUser}>
 		<Form>
 			<Form.Group controlId='formFirstName'>
 				<Form.Label>FirstName:</Form.Label>
@@ -109,9 +129,9 @@ export const ProfileView = ({ user }) => {
 
 			<Button
 				variant='primary'
-				// type='submit'
 				style={{ marginTop: '15px' }}
-				onClick={handleUpdateUser}>
+				onClick={handleUpdateUser}
+				disabled={!formHasChanged}>
 				Update User
 			</Button>
 		</Form>
