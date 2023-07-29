@@ -10,41 +10,48 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { setMovies } from '../../redux/reducers/movies';
-import { setUser } from '../../redux/reducers/user';
-import { setSelectedMovie } from '../../redux/reducers/selectedMovie';
+import { setFavoriteMovies } from '../../redux/reducers/favoriteMovies';
 import { MoviesList } from '../movies-list/movies-list';
+
+// localStorage.setItem('user', JSON.stringify({}));
 
 export const MainView = () => {
 	const movies = useSelector((state) => state.movies.list);
-	console.log('in Mainview => state.movies.value): ', movies);
 
 	const selectedMovie = useSelector((state) => state.selectedMovie);
-	console.log('in Mainview => state.selectedMovie): ', selectedMovie);
 
 	const [similarMovies, setSimilarMovies] = useState([]);
 
-	let token = localStorage.getItem('token');
-	let storedUser = JSON.parse(localStorage.getItem('user'));
+	const favoriteMovies = useSelector((state) => state.favoriteMovies.list);
 
-	// const user = storedUser ? storedUser : useSelector((state) => state.user);
+	let token = localStorage.getItem('token') ? localStorage.getItem('token') : '';
+
+	let storedUser = JSON.parse(localStorage.getItem('user'));
+	// console.log('STORED USER : ', storedUser);
 	const stateUser = useSelector((state) => state.user);
+	// console.log('STATE USER : ', stateUser);
 
 	const user = stateUser ? stateUser : storedUser;
 
-	console.log('in mainview, stateUser, storedUser : ', stateUser, storedUser);
-
 	const dispatch = useDispatch();
+
+	// console.log('user : ', user);
+	// console.log('token : ', token);
+	// console.log('movies : ', movies);
+	// console.log('selectedMovie : ', selectedMovie);
+	// console.log('similarMovies : ', similarMovies);
+	// console.log('favoriteMovies : ', favoriteMovies);
 
 	// Constructors
 
 	// If Logged In... Fetch Movies
 	useEffect(() => {
-		console.log('token and user in useeffect mainview : ', token, user);
 		if (!token || !user) {
 			return;
 		}
 		// else...
 		fetch('https://theflix-api.herokuapp.com/movies', {
+			// fetch('localhost:8080/movies', {
 			headers: { Authorization: `Bearer ${token}` },
 		})
 			.then((response) => response.json())
@@ -60,10 +67,9 @@ export const MainView = () => {
 						// actors: movie.actors?.[0],
 					};
 				});
-				// setMovies(movies);
 				dispatch(setMovies(moviesFromApi));
 			});
-	}, []);
+	}, [token]);
 
 	useEffect(() => {
 		if (selectedMovie && token) {
@@ -74,15 +80,14 @@ export const MainView = () => {
 		}
 	}, [selectedMovie, movies, token]);
 
-	// Logout function
-	// const handleLogout = () => {
-	// 	dispatch(setUser(null));
-	// setToken(null);
-	// setSelectedMovie(null);
-	// let token = null;
-	// localStorage.clear();
-	// console.log('LOGGED OUT : ', user, token);
-	// };
+	useEffect(() => {
+		if (!user || !movies) {
+			return;
+		}
+		const userFavoriteMovies = movies.filter((movie) => user?.favoriteMovies?.includes(movie.id));
+		dispatch(setFavoriteMovies(userFavoriteMovies));
+		// }, [movies, token, user]);
+	}, [user, movies]);
 
 	return (
 		<BrowserRouter>
@@ -101,7 +106,6 @@ export const MainView = () => {
 										<Col
 											md={6}
 											style={{
-												// border: '1px solid black',
 												boxShadow: '1px 1px 10px 0px rgb(41, 39, 39)',
 												borderRadius: '9px',
 												padding: '15px',
@@ -146,7 +150,7 @@ export const MainView = () => {
 							<>
 								{!token ? (
 									<Navigate
-										to='/login'
+										to='/'
 										replace
 									/>
 								) : movies.length === 0 ? (
@@ -154,7 +158,6 @@ export const MainView = () => {
 								) : (
 									<>
 										<Row style={{ marginTop: '100px' }}>
-											{/* <MovieView movies={movies} /> */}
 											<MovieView />
 											<hr />
 
@@ -163,17 +166,11 @@ export const MainView = () => {
 										<Row>
 											{similarMovies.map((movie) => (
 												<Col
-													// style={{ border: '1px solid black' }}
 													key={movie.id}
 													lg={3}
 													md={4}
 													xs={6}>
-													<MovieCard
-														movie={movie}
-														// onMovieClick={(newSelectedMovie) => {
-														// 	setSelectedMovie(newSelectedMovie);
-														// }}
-													/>
+													<MovieCard movie={movie} />
 												</Col>
 											))}
 										</Row>
@@ -190,21 +187,6 @@ export const MainView = () => {
 									<>
 										<Row style={{ marginTop: '90px' }}>
 											<MoviesList />
-											{/* {movies.map((movie) => (
-												<Col
-													key={movie.id}
-													lg={3}
-													md={4}
-													xs={6}>
-													<MovieCard
-														// key={movie.id}
-														movie={movie}
-														onMovieClick={(newSelectedMovie) => {
-															setSelectedMovie(newSelectedMovie);
-														}}
-													/>
-												</Col>
-											))} */}
 										</Row>
 									</>
 								) : (
@@ -218,7 +200,12 @@ export const MainView = () => {
 						path='/users/:userName'
 						element={
 							<>
-								{token ? (
+								{!token ? (
+									<Navigate
+										to='/'
+										replace
+									/>
+								) : (
 									<>
 										<Row style={{ marginTop: '100px' }}>
 											<Col></Col>
@@ -235,9 +222,26 @@ export const MainView = () => {
 											</Col>
 											<Col></Col>
 										</Row>
+										{favoriteMovies.length > 0 ? (
+											<Row style={{ marginTop: '30px' }}>
+												<hr />
+
+												<h2>Favorite Movies : </h2>
+
+												{favoriteMovies.map((movie) => (
+													<Col
+														key={movie.id}
+														lg={3}
+														md={4}
+														xs={6}>
+														<MovieCard movie={movie} />
+													</Col>
+												))}
+											</Row>
+										) : (
+											''
+										)}
 									</>
-								) : (
-									<Col>Please Login...</Col>
 								)}
 							</>
 						}
