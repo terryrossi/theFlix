@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 // Import the PropTypes library
 import PropTypes from 'prop-types';
 
@@ -40,15 +41,12 @@ export const MovieCard = ({ movie }) => {
 						// boxShadow: '1px 1px 10px 0px rgb(41, 39, 39)',
 					}}
 				/>
-				<Card.Body>
+				<Card.Body className='d-flex flex-column align-items-center'>
 					<Card.Title
 						className='text-center'
 						style={{ color: 'black' }}>
 						{movie.title}
 					</Card.Title>
-					{/* <Link to={`/movies/${encodeURIComponent(movie.id)}`}>
-						<Button variant='link'>Open</Button>
-					</Link> */}
 				</Card.Body>
 			</Card>
 		</Link>

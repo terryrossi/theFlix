@@ -4,6 +4,7 @@ import { Form, Button } from 'react-bootstrap';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { setUser } from '../../redux/reducers/user';
+import { setFavoriteMovies } from '../../redux/reducers/favoriteMovies';
 // import { MoviesList } from '../movies-list/movies-list';
 
 export const ProfileView = () => {
@@ -14,6 +15,7 @@ export const ProfileView = () => {
 	const token = localStorage.getItem('token');
 
 	const movies = useSelector((state) => state.movies.list);
+	// const favoriteMovies = useSelector((state) => state.favoriteMovies.list);
 
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
@@ -22,12 +24,6 @@ export const ProfileView = () => {
 	const [formHasChanged, setFormHasChanged] = useState(false);
 
 	const dispatch = useDispatch();
-
-	const favoriteMovies = user.favoriteMovies.map((movie) => {
-		return movie;
-	});
-
-	console.log('Favorite Movies : ', favoriteMovies);
 
 	useEffect(() => {
 		if (!token) {
@@ -64,6 +60,7 @@ export const ProfileView = () => {
 
 			// Update user data via API
 			fetch(`https://theflix-api.herokuapp.com/users/`, {
+				// fetch(`localhost:8080/users/`, {
 				method: 'PATCH',
 				headers: {
 					'content-type': 'application/json',

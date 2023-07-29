@@ -13,6 +13,8 @@ import { setMovies } from '../../redux/reducers/movies';
 import { setFavoriteMovies } from '../../redux/reducers/favoriteMovies';
 import { MoviesList } from '../movies-list/movies-list';
 
+// localStorage.setItem('user', JSON.stringify({}));
+
 export const MainView = () => {
 	const movies = useSelector((state) => state.movies.list);
 
@@ -21,24 +23,24 @@ export const MainView = () => {
 	const [similarMovies, setSimilarMovies] = useState([]);
 
 	const favoriteMovies = useSelector((state) => state.favoriteMovies.list);
-	// const [favoriteMovies, setFavoriteMovies] = useState([]);
 
-	let token = localStorage.getItem('token');
+	let token = localStorage.getItem('token') ? localStorage.getItem('token') : '';
+
 	let storedUser = JSON.parse(localStorage.getItem('user'));
-	// let favoriteMovies = JSON.parse(localStorage.getItem('favoriteMovies'));
-
+	// console.log('STORED USER : ', storedUser);
 	const stateUser = useSelector((state) => state.user);
-	console.log('stateUser = ', stateUser);
+	// console.log('STATE USER : ', stateUser);
+
 	const user = stateUser ? stateUser : storedUser;
 
 	const dispatch = useDispatch();
 
-	console.log('user : ', user);
-	console.log('token : ', token);
-	console.log('movies : ', movies);
-	console.log('selectedMovie : ', selectedMovie);
-	console.log('similarMovies : ', similarMovies);
-	console.log('favoriteMovies : ', favoriteMovies);
+	// console.log('user : ', user);
+	// console.log('token : ', token);
+	// console.log('movies : ', movies);
+	// console.log('selectedMovie : ', selectedMovie);
+	// console.log('similarMovies : ', similarMovies);
+	// console.log('favoriteMovies : ', favoriteMovies);
 
 	// Constructors
 
@@ -49,6 +51,7 @@ export const MainView = () => {
 		}
 		// else...
 		fetch('https://theflix-api.herokuapp.com/movies', {
+			// fetch('localhost:8080/movies', {
 			headers: { Authorization: `Bearer ${token}` },
 		})
 			.then((response) => response.json())
@@ -65,7 +68,6 @@ export const MainView = () => {
 					};
 				});
 				dispatch(setMovies(moviesFromApi));
-				console.log('Fetched Movies : ', movies);
 			});
 	}, [token]);
 
@@ -79,15 +81,13 @@ export const MainView = () => {
 	}, [selectedMovie, movies, token]);
 
 	useEffect(() => {
-		if (user?.favoriteMovies?.length && token) {
-			const userFavoriteMovies = movies.filter((movie) => user.favoriteMovies.includes(movie.id));
-
-			dispatch(setFavoriteMovies(userFavoriteMovies));
-			// setFavoriteMovies(userFavoriteMovies);
+		if (!user || !movies) {
+			return;
 		}
-	}, [movies, token]);
-
-	console.log('Favorite Movies: ', favoriteMovies);
+		const userFavoriteMovies = movies.filter((movie) => user?.favoriteMovies?.includes(movie.id));
+		dispatch(setFavoriteMovies(userFavoriteMovies));
+		// }, [movies, token, user]);
+	}, [user, movies]);
 
 	return (
 		<BrowserRouter>
