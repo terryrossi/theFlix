@@ -4,19 +4,24 @@ import { Form, Button } from 'react-bootstrap';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { setUser } from '../../redux/reducers/user';
-import { setFavoriteMovies } from '../../redux/reducers/favoriteMovies';
+// import { setFavoriteMovies } from '../../redux/reducers/favoriteMovies';
 // import { MoviesList } from '../movies-list/movies-list';
 
 export const ProfileView = () => {
 	const { userName } = useParams();
 
-	let user = JSON.parse(localStorage.getItem('user'));
-
+	// Local Storage...
+	let storedUser = JSON.parse(localStorage.getItem('user'));
 	const token = localStorage.getItem('token');
 
-	const movies = useSelector((state) => state.movies.list);
-	// const favoriteMovies = useSelector((state) => state.favoriteMovies.list);
+	// useSelectors...
+	let user = useSelector((state) => state.user);
 
+	if (storedUser && !user) {
+		user = storedUser;
+	}
+
+	// States...
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
 	const [email, setEmail] = useState('');

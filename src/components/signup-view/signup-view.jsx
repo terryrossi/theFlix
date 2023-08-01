@@ -30,7 +30,7 @@ export const SignupView = () => {
 		})
 			.then((response) => response.json())
 			.then((user) => {
-				console.log(user);
+				// console.log(user);
 				if (user) {
 					fetch(
 						`https://theflix-api.herokuapp.com/login?userName=${userName}&password=${password}`,

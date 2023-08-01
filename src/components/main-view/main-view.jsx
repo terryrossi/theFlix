@@ -9,47 +9,39 @@ import { NavigationBar } from '../navigation-bar/navigation-bar';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import { useSelector, useDispatch } from 'react-redux';
+import { setUser } from '../../redux/reducers/user';
 import { setMovies } from '../../redux/reducers/movies';
 import { setFavoriteMovies } from '../../redux/reducers/favoriteMovies';
+import { setSelectedMovie } from '../../redux/reducers/selectedMovie';
+
 import { MoviesList } from '../movies-list/movies-list';
 
-// localStorage.setItem('user', JSON.stringify({}));
-
 export const MainView = () => {
-	const movies = useSelector((state) => state.movies.list);
+	// localStorage...
+	let token = localStorage.getItem('token') ? localStorage.getItem('token') : '';
+	let storedUser = JSON.parse(localStorage.getItem('user'));
 
-	const selectedMovie = useSelector((state) => state.selectedMovie);
-
+	// useState...
 	const [similarMovies, setSimilarMovies] = useState([]);
 
+	// useSelectors...
+	const movies = useSelector((state) => state.movies.list);
+	const selectedMovie = useSelector((state) => state.selectedMovie);
 	const favoriteMovies = useSelector((state) => state.favoriteMovies.list);
-
-	let token = localStorage.getItem('token') ? localStorage.getItem('token') : '';
-
-	let storedUser = JSON.parse(localStorage.getItem('user'));
-	// console.log('STORED USER : ', storedUser);
-	const stateUser = useSelector((state) => state.user);
-	// console.log('STATE USER : ', stateUser);
-
-	const user = stateUser ? stateUser : storedUser;
+	let user = useSelector((state) => state.user);
 
 	const dispatch = useDispatch();
 
-	// console.log('user : ', user);
-	// console.log('token : ', token);
-	// console.log('movies : ', movies);
-	// console.log('selectedMovie : ', selectedMovie);
-	// console.log('similarMovies : ', similarMovies);
-	// console.log('favoriteMovies : ', favoriteMovies);
+	// For persistence, in case user State is lost, use localStorage
+	if (!user && storedUser) {
+		user = storedUser;
+		dispatch(setUser(storedUser));
+	}
 
 	// Constructors
 
 	// If Logged In... Fetch Movies
 	useEffect(() => {
-		if (!token || !user) {
-			return;
-		}
-		// else...
 		fetch('https://theflix-api.herokuapp.com/movies', {
 			// fetch('localhost:8080/movies', {
 			headers: { Authorization: `Bearer ${token}` },
@@ -69,24 +61,28 @@ export const MainView = () => {
 				});
 				dispatch(setMovies(moviesFromApi));
 			});
-	}, [token]);
+	}, [user]);
 
+	// useEffect() for similar Movies
 	useEffect(() => {
-		if (selectedMovie && token) {
-			const similarMovies = movies.filter((movie) => {
+		if (!user || !movies || !selectedMovie) {
+			return;
+		} else {
+			const simMovies = movies.filter((movie) => {
 				return movie.id !== selectedMovie.id && movie.genre === selectedMovie.genre;
 			});
-			setSimilarMovies(similarMovies);
+			setSimilarMovies(simMovies);
 		}
-	}, [selectedMovie, movies, token]);
+	}, [selectedMovie]);
 
+	// useEffect()  for favorite Movies
 	useEffect(() => {
-		if (!user || !movies) {
+		if (!user) {
 			return;
+		} else if (user.favoriteMovies) {
+			const favMovies = movies.filter((movie) => user?.favoriteMovies?.includes(movie.id));
+			dispatch(setFavoriteMovies(favMovies));
 		}
-		const userFavoriteMovies = movies.filter((movie) => user?.favoriteMovies?.includes(movie.id));
-		dispatch(setFavoriteMovies(userFavoriteMovies));
-		// }, [movies, token, user]);
 	}, [user, movies]);
 
 	return (
@@ -148,7 +144,7 @@ export const MainView = () => {
 						path='/movies/:movieId'
 						element={
 							<>
-								{!token ? (
+								{!token || !selectedMovie ? (
 									<Navigate
 										to='/'
 										replace

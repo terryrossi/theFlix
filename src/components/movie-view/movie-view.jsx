@@ -3,38 +3,47 @@ import React, { useEffect, useState } from 'react';
 import { Row, Col, Card, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router';
-import './movie-view.scss';
+// import './movie-view.scss';
 import { useSelector, useDispatch } from 'react-redux';
 import { setUser } from '../../redux/reducers/user';
-import { setFavoriteMovies } from '../../redux/reducers/favoriteMovies';
+// import { setSelectedMovie } from '../../redux/reducers/selectedMovie';
 
 export const MovieView = () => {
-	const { movieId } = useParams();
-
-	let user = JSON.parse(localStorage.getItem('user'));
+	// Locale Storage
+	let storedUser = JSON.parse(localStorage.getItem('user'));
 	let token = localStorage.getItem('token');
 
+	// useSelectors...
 	const movies = useSelector((state) => state.movies.list);
 	const favoriteMovies = useSelector((state) => state.favoriteMovies.list);
+	const selectedMovie = useSelector((state) => state.selectedMovie);
+	let user = useSelector((state) => state.user) ? useSelector((state) => state.user) : storedUser;
 
-	const selectedMovie = movies.find((b) => b.id === movieId);
+	// Variables
+	const { movieId } = useParams();
+	if (movieId !== selectedMovie.id) console.log('*** INCONSISTENT MOVIE ID ***');
+	// const selectedMovie = movies.find((b) => b.id === movieId);
 
+	// useStates...
 	const [favorited, setFavorited] = useState(false);
 
 	const dispatch = useDispatch();
 
-	// console.log('State favoriteMovies ====== ', favoriteMovies);
+	if (!user && storedUser) {
+		user = storedUser;
+		dispatch(setUser(storedUser));
+	}
 
 	// FUNCTION TO CHECK IF the movie.Id passed as a param is on the list of FavoriteMovies
 	// In order to show the Button as "Favorited" or 'Favorite' and switch back and forth
-	const isFavorited = (array) => {
-		return array.some((obj) => obj.id === movieId);
+	const isFavorited = (favoriteMovies) => {
+		return favoriteMovies.some((mov) => mov.id === selectedMovie.id);
 	};
 
 	// UseEffect to avoid looping on favorited
 	useEffect(() => {
 		setFavorited(isFavorited(favoriteMovies));
-	}, [user]);
+	}, [selectedMovie]);
 
 	// THIS FUNCTION ADDS THE selectedMovie TO the USER's list of favorites IN THE DATABAS
 	const addFavorite = function (selectedMovie) {
@@ -69,7 +78,7 @@ export const MovieView = () => {
 						localStorage.setItem('user', JSON.stringify(updatedUser));
 						dispatch(setUser(updatedUser));
 
-						alert(`${selectedMovie.title} has been added to your Favorites`);
+						// alert(`${selectedMovie.title} has been added to your Favorites`);
 					});
 				}
 			})
@@ -110,12 +119,12 @@ export const MovieView = () => {
 					response.json().then((updatedUser) => {
 						localStorage.setItem('user', JSON.stringify(updatedUser));
 						dispatch(setUser(updatedUser));
-						alert(`${selectedMovie.title} has been REMOVED from your Favorites`);
+						// alert(`${selectedMovie.title} has been REMOVED from your Favorites`);
 					});
 				}
 			})
 			.catch((e) => {
-				console.log('error occurred during addition of a new movie in list of Favorites : ', e);
+				console.log('error occurred during removal of a movie in list of Favorites : ', e);
 			});
 	};
 
@@ -153,7 +162,7 @@ export const MovieView = () => {
 									alt='Poster of the movie'
 								/>
 								<Button
-									variant={favorited ? 'danger' : 'outline-danger'}
+									variant={favorited ? 'light' : 'outline-danger'}
 									onClick={handleFavoriteClick}
 									style={{ margin: '10px' }}>
 									{favorited ? '❤️ Favorited' : '♡ Favorite'}
@@ -189,7 +198,7 @@ export const MovieView = () => {
 								style={{ width: '100%' }}
 								variant='primary'
 								type='submit'>
-								Back
+								Back to Movie List
 							</Button>
 						</Link>
 					</Card>

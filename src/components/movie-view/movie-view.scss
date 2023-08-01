@@ -1,10 +1,9 @@
-.back-button {
-	padding: 4px 12px 4px 12px;
-	// width: 55px;
-	color: whitesmoke;
-	background-color: dodgerblue;
-	border: none;
-	box-shadow: 1px 1px 5px 0px rgb(41, 39, 39);
-	border-radius: 4px;
-	cursor: pointer;
+.clicked-button {
+	outline: none; /* Remove the outline when clicked */
+	box-shadow: none; /* Remove any box shadow when clicked */
+	background-color: rgb(197, 196, 196);
+}
+
+.unclicked-button {
+	/* Add any styles for the unclicked state here if needed */
 }

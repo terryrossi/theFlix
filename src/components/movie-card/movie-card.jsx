@@ -2,11 +2,9 @@ import React, { useState } from 'react';
 // Import the PropTypes library
 import PropTypes from 'prop-types';
 
-import { Button, Card } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { setMovies } from '../../redux/reducers/movies';
-import { setUser } from '../../redux/reducers/user';
+import { useDispatch } from 'react-redux';
 import { setSelectedMovie } from '../../redux/reducers/selectedMovie';
 
 // export const MovieCard = (props) => {
@@ -15,8 +13,6 @@ import { setSelectedMovie } from '../../redux/reducers/selectedMovie';
 // or...
 export const MovieCard = ({ movie }) => {
 	const dispatch = useDispatch();
-
-	let selectedMovie = useSelector((state) => state.selectedMovie);
 
 	return (
 		<Link

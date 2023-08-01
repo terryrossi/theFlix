@@ -5,16 +5,16 @@ import { useDispatch } from 'react-redux';
 import { setUser } from '../../redux/reducers/user';
 
 export const LoginView = () => {
-	const dispatch = useDispatch();
-
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
+
+	const dispatch = useDispatch();
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
 
+		// Fetch userName and Password for Login
 		fetch(`https://theflix-api.herokuapp.com/login?userName=${username}&password=${password}`, {
-			// fetch(`localhost:8080/login?userName=${username}&password=${password}`, {
 			method: 'POST',
 		})
 			.then((response) => response.json())
@@ -22,16 +22,16 @@ export const LoginView = () => {
 				if (data.token) {
 					localStorage.setItem('user', JSON.stringify(data.user));
 					localStorage.setItem('token', data.token);
+
 					dispatch(setUser(data.user));
-					// setUser(data.user);
-					console.log('Logged In as : ', data.user);
+
+					console.log('Logged In as : ', data.user.userName);
 				}
 			})
 			.catch((e) => {
 				alert('something went wrong in Login');
 			});
 	};
-
 	return (
 		<>
 			<Form onSubmit={handleSubmit}>

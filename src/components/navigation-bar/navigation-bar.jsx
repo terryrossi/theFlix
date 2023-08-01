@@ -28,6 +28,7 @@ export const NavigationBar = () => {
 		dispatch(setMovies([]));
 		dispatch(setFavoriteMovies([]));
 		token = null;
+		user = null;
 		localStorage.clear();
 		console.log('Logged out!!!');
 	};
