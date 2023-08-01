@@ -27638,7 +27638,7 @@ $RefreshReg$(_c, "MainView");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","../movie-card/movie-card":"bwuIu","../movie-view/movie-view":"ggaUx","../login-view/login-view":"9YtA0","../signup-view/signup-view":"4OGiN","react-bootstrap":"3AD9A","../navigation-bar/navigation-bar":"bsPVM","react-router-dom":"9xmpe","../profile-view/profile-view":"2vVqf","react-redux":"bdVon","../../redux/reducers/movies":"l0qwl","../movies-list/movies-list":"bPxKK","../../redux/reducers/favoriteMovies":"hbM2o","../../redux/reducers/user":"e6tdF","../../redux/reducers/selectedMovie":"3qq7V"}],"gkKU3":[function(require,module,exports) {
+},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","../movie-card/movie-card":"bwuIu","../movie-view/movie-view":"ggaUx","../login-view/login-view":"9YtA0","../signup-view/signup-view":"4OGiN","react-bootstrap":"3AD9A","../navigation-bar/navigation-bar":"bsPVM","react-router-dom":"9xmpe","../profile-view/profile-view":"2vVqf","react-redux":"bdVon","../../redux/reducers/user":"e6tdF","../../redux/reducers/movies":"l0qwl","../../redux/reducers/favoriteMovies":"hbM2o","../../redux/reducers/selectedMovie":"3qq7V","../movies-list/movies-list":"bPxKK"}],"gkKU3":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -27769,7 +27769,7 @@ $RefreshReg$(_c, "MovieCard");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","prop-types":"7wKI2","react-bootstrap":"3AD9A","react-router-dom":"9xmpe","react-redux":"bdVon","react":"21dqq","../../redux/reducers/selectedMovie":"3qq7V"}],"7wKI2":[function(require,module,exports) {
+},{"react/jsx-dev-runtime":"iTorj","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","prop-types":"7wKI2","react-bootstrap":"3AD9A","react-router-dom":"9xmpe","react":"21dqq","react-redux":"bdVon","../../redux/reducers/selectedMovie":"3qq7V"}],"7wKI2":[function(require,module,exports) {
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -48577,7 +48577,7 @@ const selectedMovieSlice = (0, _toolkit.createSlice)({
 const { setSelectedMovie  } = selectedMovieSlice.actions;
 exports.default = selectedMovieSlice.reducer;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@reduxjs/toolkit":"lL1Ef"}],"lL1Ef":[function(require,module,exports) {
+},{"@reduxjs/toolkit":"lL1Ef","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"lL1Ef":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "EnhancerArray", ()=>EnhancerArray);
@@ -52795,7 +52795,7 @@ $RefreshReg$(_c, "MovieView");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","react-bootstrap":"3AD9A","react-router-dom":"9xmpe","react-router":"dbWyW","react-redux":"bdVon","react":"21dqq","../../redux/reducers/user":"e6tdF"}],"e6tdF":[function(require,module,exports) {
+},{"react/jsx-dev-runtime":"iTorj","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","react-bootstrap":"3AD9A","react-router-dom":"9xmpe","react-router":"dbWyW","react":"21dqq","react-redux":"bdVon","../../redux/reducers/user":"e6tdF"}],"e6tdF":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "setUser", ()=>setUser);
@@ -53362,31 +53362,7 @@ $RefreshReg$(_c, "NavigationBar");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","react-bootstrap":"3AD9A","react-router-dom":"9xmpe","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","react-redux":"bdVon","../../redux/reducers/user":"e6tdF","../../redux/reducers/selectedMovie":"3qq7V","../../redux/reducers/favoriteMovies":"hbM2o","../../redux/reducers/movies":"l0qwl"}],"hbM2o":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "setFavoriteMovies", ()=>setFavoriteMovies);
-parcelHelpers.export(exports, "setFavoriteMoviesFilter", ()=>setFavoriteMoviesFilter);
-var _toolkit = require("@reduxjs/toolkit");
-const favoriteMoviesSlice = (0, _toolkit.createSlice)({
-    name: "favoriteMovies",
-    initialState: {
-        list: [],
-        filter: ""
-    },
-    reducers: {
-        setFavoriteMovies: (state, action)=>{
-            state.list = action.payload;
-        },
-        setFavoriteMoviesFilter: (state, action)=>{
-            state.filter = action.payload;
-        }
-    }
-});
-const { setFavoriteMovies , setFavoriteMoviesFilter  } = favoriteMoviesSlice.actions;
-exports.default = favoriteMoviesSlice.reducer;
-
-},{"@reduxjs/toolkit":"lL1Ef","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"l0qwl":[function(require,module,exports) {
+},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","react-bootstrap":"3AD9A","react-router-dom":"9xmpe","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","react-redux":"bdVon","../../redux/reducers/movies":"l0qwl","../../redux/reducers/user":"e6tdF","../../redux/reducers/selectedMovie":"3qq7V","../../redux/reducers/favoriteMovies":"hbM2o"}],"l0qwl":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "setMovies", ()=>setMovies);
@@ -53409,6 +53385,30 @@ const moviesSlice = (0, _toolkit.createSlice)({
 });
 const { setMovies , setFilter  } = moviesSlice.actions;
 exports.default = moviesSlice.reducer;
+
+},{"@reduxjs/toolkit":"lL1Ef","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"hbM2o":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "setFavoriteMovies", ()=>setFavoriteMovies);
+parcelHelpers.export(exports, "setFavoriteMoviesFilter", ()=>setFavoriteMoviesFilter);
+var _toolkit = require("@reduxjs/toolkit");
+const favoriteMoviesSlice = (0, _toolkit.createSlice)({
+    name: "favoriteMovies",
+    initialState: {
+        list: [],
+        filter: ""
+    },
+    reducers: {
+        setFavoriteMovies: (state, action)=>{
+            state.list = action.payload;
+        },
+        setFavoriteMoviesFilter: (state, action)=>{
+            state.filter = action.payload;
+        }
+    }
+});
+const { setFavoriteMovies , setFavoriteMoviesFilter  } = favoriteMoviesSlice.actions;
+exports.default = favoriteMoviesSlice.reducer;
 
 },{"@reduxjs/toolkit":"lL1Ef","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"2vVqf":[function(require,module,exports) {
 var $parcel$ReactRefreshHelpers$3c12 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
@@ -53768,6 +53768,6 @@ const store = (0, _toolkit.configureStore)({
     }
 });
 
-},{"@reduxjs/toolkit":"lL1Ef","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./reducers/movies":"l0qwl","./reducers/user":"e6tdF","./reducers/selectedMovie":"3qq7V","./reducers/favoriteMovies":"hbM2o"}]},["4s3Ar","1xC6H","d8Dch"], "d8Dch", "parcelRequired704")
+},{"@reduxjs/toolkit":"lL1Ef","./reducers/movies":"l0qwl","./reducers/user":"e6tdF","./reducers/selectedMovie":"3qq7V","./reducers/favoriteMovies":"hbM2o","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["4s3Ar","1xC6H","d8Dch"], "d8Dch", "parcelRequired704")
 
 //# sourceMappingURL=index.b4b6dfad.js.map
