@@ -123,4 +123,4 @@ filtering movies)
 
 ## Flow Chart of the different Components:
 
-![TheFlix App Flow Chart](./diagrams/TheFlix-Redux-Flow.drawio)
+![TheFlix App Flow Chart](./Diagrams/TheFlix-Redux-Flow.drawio.pdf)
