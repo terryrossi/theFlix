@@ -135,4 +135,4 @@ mastering is known as the MERN (MongoDB, Express, React, and Node.js) stack.
 
 ## Flow Chart of the different Components:
 
-![TheFlix App Flow Chart](./diagrams/TheFlix-Redux-Flow.drawio.svg)
+![TheFlix App Flow Chart](./diagrams/TheFlix-Redux-Flow.jpg)
