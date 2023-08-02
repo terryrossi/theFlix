@@ -33,7 +33,7 @@ export const MovieView = () => {
 		user = storedUser;
 		dispatch(setUser(storedUser));
 	}
-
+	//
 	// FUNCTION TO CHECK IF the movie.Id passed as a param is on the list of FavoriteMovies
 	// In order to show the Button as "Favorited" or 'Favorite' and switch back and forth
 	const isFavorited = (favoriteMovies) => {
