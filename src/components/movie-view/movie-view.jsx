@@ -89,7 +89,7 @@ export const MovieView = () => {
 
 	// THIS FUNCTION REMOVES THE selectedMovie FROM the USER's list of favorites IN THE DATABAS
 	const removeFavorite = function (selectedMovie) {
-		// Update user data to add a favorite Movie via API
+		// Update user data to delete a favorite Movie via API
 		fetch(`https://theflix-api.herokuapp.com/users/${user.userName}/favorites`, {
 			// fetch(`localhost:8080/users/${user.userName}/favorites`, {
 			method: 'DELETE',
